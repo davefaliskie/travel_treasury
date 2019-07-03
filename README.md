@@ -1,16 +1,17 @@
 # travel_budget
 
-A new Flutter application.
+This repository contains all the code written throughout the 1ManStartup YouTube tutorials for building a travel budget app using Flutter
 
-## Getting Started
+[View the channel on YouTube](https://www.youtube.com/channel/UC8xcnxN4CyXdPCeUN1eURPg)
 
-This project is a starting point for a Flutter application.
+## How To Use This Resource
 
-A few resources to get you started if this is your first Flutter project:
+Each episode where code is created or modified will have an associated branch
+in this repo. The code in each episodes branch will contain the the completed code from the episode
+and the branch will remain in that state.
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+The master branch will contain the most recent version of code, and be considered the "production" version.
+This means all the master branch will always be the most up to date.
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+
+Any questions should be asked in the comments of the relevant video on YouTube.
