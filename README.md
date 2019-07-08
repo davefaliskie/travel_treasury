@@ -15,3 +15,8 @@ This means all the master branch will always be the most up to date.
 
 
 Any questions should be asked in the comments of the relevant video on YouTube.
+
+
+## Setup Firebase Database
+
+After Episode 15 you will need to configure your own Firebase project. Most importantly you will need to generate and include your own google-services.json file for Android and GoogleServices-Info.plist file for iOS. Full instructions on how to configure Firebase for this project can be found in [Episode 15 on YouTube](https://youtu.be/8L0YWmVYIqU)
