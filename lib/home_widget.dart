@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'pages.dart';
-import 'home_view.dart';
+import 'package:travel_budget/views/home_view.dart';
+import 'package:travel_budget/views/new_trips/location_view.dart';
+import 'package:travel_budget/models/Trip.dart';
 
 
 class Home extends StatefulWidget {
@@ -20,9 +22,21 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    final newTrip = new Trip(null, null, null, null, null);
     return Scaffold(
       appBar: AppBar(
         title: Text("Travel Budget App"),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => NewTripLocationView(trip: newTrip,)),
+              );
+            },
+          )
+        ],
       ),
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
