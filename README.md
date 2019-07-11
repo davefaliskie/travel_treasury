@@ -7,11 +7,11 @@ This repository contains all the code written throughout the 1ManStartup YouTube
 ## How To Use This Resource
 
 Each episode where code is created or modified will have an associated branch
-in this repo. The code in each episodes branch will contain the the completed code from the episode
+in this repo. The code in each episode's branch will contain the completed code from that episode
 and the branch will remain in that state.
 
 The master branch will contain the most recent version of code, and be considered the "production" version.
-This means all the master branch will always be the most up to date.
+This means the master branch will always be the most up to date.
 
 
 Any questions should be asked in the comments of the relevant video on YouTube.
