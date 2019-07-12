@@ -4,8 +4,6 @@ import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 import 'package:intl/intl.dart';
 import 'dart:async';
 
-
-
 import 'budget_view.dart';
 
 class NewTripDateView extends StatefulWidget {
@@ -39,13 +37,16 @@ class _NewTripDateViewState extends State<NewTripDateView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Create Trip - Date'),
-        ),
-        body: Center(
-            child: Column(
+      appBar: AppBar(
+        title: Text('Create Trip - Date'),
+      ),
+      body: Center(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            buildSelectedDetails(context, widget.trip),
+
+            Spacer(),
             Text("Location ${widget.trip.title}"),
             RaisedButton(
               child: Text("Select Dates"),
@@ -56,8 +57,10 @@ class _NewTripDateViewState extends State<NewTripDateView> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Text("Start Date: ${DateFormat('MM/dd/yyyy').format(_startDate).toString()}"),
-                Text("End Date: ${DateFormat('MM/dd/yyyy').format(_endDate).toString()}"),
+                Text(
+                    "Start Date: ${DateFormat('MM/dd/yyyy').format(_startDate).toString()}"),
+                Text(
+                    "End Date: ${DateFormat('MM/dd/yyyy').format(_endDate).toString()}"),
               ],
             ),
             RaisedButton(
@@ -73,7 +76,76 @@ class _NewTripDateViewState extends State<NewTripDateView> {
                 );
               },
             ),
+            Spacer(),
           ],
-        )));
+        ),
+      ),
+    );
+  }
+
+  Widget buildSelectedDetails(BuildContext context, Trip trip) {
+    return Hero(
+      tag: "SelectedTrip-${trip.title}",
+      transitionOnUserGestures: true,
+      child: Container(
+        child: Padding(
+          padding: const EdgeInsets.only(
+            left: 8.0,
+            right: 8.0,
+          ),
+          child: SingleChildScrollView(
+            child: Card(
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          top: 16.0, left: 16.0, bottom: 16.0),
+                      child: Column(
+                        children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                              Text(trip.title, style: TextStyle(fontSize: 30.0)),
+                            ],
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Text("Average Budget -- Not set up yet®"),
+                            ],
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Text("Trip Dates"),
+                            ],
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Text("Trip Budget"),
+                            ],
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Text("Trip Type"),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Column(
+                    children: <Widget>[
+                      Placeholder(
+                        fallbackHeight: 100,
+                        fallbackWidth: 100,
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
