@@ -27,6 +27,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   intl: 0.15.7
   date_range_picker: ^1.0.3
+  auto_size_text: ^2.0.2
 
 
 dev_dependencies:
