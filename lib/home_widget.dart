@@ -3,6 +3,9 @@ import 'pages.dart';
 import 'package:travel_budget/views/home_view.dart';
 import 'package:travel_budget/views/new_trips/location_view.dart';
 import 'package:travel_budget/models/Trip.dart';
+import 'package:travel_budget/widgets/provider_widget.dart';
+import 'package:travel_budget/services/auth_service.dart';
+
 
 
 class Home extends StatefulWidget {
@@ -35,7 +38,20 @@ class _HomeState extends State<Home> {
                   MaterialPageRoute(builder: (context) => NewTripLocationView(trip: newTrip,)),
               );
             },
+          ),
+          IconButton(
+            icon: Icon(Icons.undo),
+            onPressed: () async {
+              try {
+                AuthService auth = Provider.of(context).auth;
+                await auth.signOut();
+                print("Signed Out!");
+              } catch (e) {
+                print (e);
+              }
+            },
           )
+          
         ],
       ),
       body: _children[_currentIndex],

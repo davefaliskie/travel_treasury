@@ -73,7 +73,9 @@ class FirstView extends StatelessWidget {
                     "Sign In",
                     style: TextStyle(color: Colors.white, fontSize: 25),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pushReplacementNamed('/signIn');
+                  },
                 )
               ],
             ),
