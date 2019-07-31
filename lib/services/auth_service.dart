@@ -41,6 +41,11 @@ class AuthService {
     return _firebaseAuth.sendPasswordResetEmail(email: email);
   }
 
+  // Create Anonymous User
+  Future singInAnonymously() {
+    return _firebaseAuth.signInAnonymously();
+  }
+
 }
 
 class NameValidator {

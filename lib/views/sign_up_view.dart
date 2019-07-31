@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:travel_budget/services/auth_service.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:travel_budget/widgets/provider_widget.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 // TODO move this to tone location
 final primaryColor = const Color(0xFF75A2EA);
 
-enum AuthFormType { signIn, signUp, reset }
+enum AuthFormType { signIn, signUp, reset, anonymous }
 
 class SignUpView extends StatefulWidget {
   final AuthFormType authFormType;
@@ -80,38 +81,64 @@ class _SignUpViewState extends State<SignUpView> {
     }
   }
 
+  Future submitAnonymous() async {
+    final auth = Provider.of(context).auth;
+    await auth.singInAnonymously();
+    Navigator.of(context).pushReplacementNamed('/home');
+  }
+
   @override
   Widget build(BuildContext context) {
-    final _width = MediaQuery.of(context).size.width;
-    final _height = MediaQuery.of(context).size.height;
+    final _width = MediaQuery
+        .of(context)
+        .size
+        .width;
+    final _height = MediaQuery
+        .of(context)
+        .size
+        .height;
 
-    return Scaffold(
-      body: Container(
-        color: primaryColor,
-        height: _height,
-        width: _width,
-        child: SafeArea(
-          child: Column(
-            children: <Widget>[
-              SizedBox(height: _height * 0.025),
-              showAlert(),
-              SizedBox(height: _height * 0.025),
-              buildHeaderText(),
-              SizedBox(height: _height * 0.05),
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Form(
-                  key: formKey,
-                  child: Column(
-                    children: buildInputs() + buildButtons(),
+    if (authFormType == AuthFormType.anonymous) {
+      submitAnonymous();
+      return Scaffold(
+        backgroundColor: primaryColor,
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            SpinKitDoubleBounce(color: Colors.white,),
+            Text("Loading", style: TextStyle(color: Colors.white),),
+          ],
+        )
+      );
+    } else {
+      return Scaffold(
+        body: Container(
+          color: primaryColor,
+          height: _height,
+          width: _width,
+          child: SafeArea(
+            child: Column(
+              children: <Widget>[
+                SizedBox(height: _height * 0.025),
+                showAlert(),
+                SizedBox(height: _height * 0.025),
+                buildHeaderText(),
+                SizedBox(height: _height * 0.05),
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Form(
+                    key: formKey,
+                    child: Column(
+                      children: buildInputs() + buildButtons(),
+                    ),
                   ),
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+    }
   }
 
   Widget showAlert() {
