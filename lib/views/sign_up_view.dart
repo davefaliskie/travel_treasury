@@ -8,11 +8,7 @@ import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 // TODO move this to tone location
 final primaryColor = const Color(0xFF75A2EA);
 
-<<<<<<< HEAD
-enum AuthFormType { signIn, signUp }
-=======
 enum AuthFormType { signIn, signUp, reset, anonymous, convert }
->>>>>>> episode_22
 
 class SignUpView extends StatefulWidget {
   final AuthFormType authFormType;
@@ -65,17 +61,6 @@ class _SignUpViewState extends State<SignUpView> {
     if (validate()) {
       try {
         final auth = Provider.of(context).auth;
-<<<<<<< HEAD
-        if (authFormType == AuthFormType.signIn) {
-          String uid = await auth.signInWithEmailAndPassword(_email, _password);
-          print("Signed In with ID $uid");
-          Navigator.of(context).pushReplacementNamed('/home');
-        } else {
-          String uid = await auth.createUserWithEmailAndPassword(
-              _email, _password, _name);
-          print("Signed up with New ID $uid");
-          Navigator.of(context).pushReplacementNamed('/home');
-=======
         switch (authFormType) {
           case AuthFormType.signIn:
             await auth.signInWithEmailAndPassword(_email, _password);
@@ -101,7 +86,6 @@ class _SignUpViewState extends State<SignUpView> {
             await auth.convertUserWithEmail(_email, _password, _name);
             Navigator.of(context).pop();
             break;
->>>>>>> episode_22
         }
       } catch (e) {
         print(e);
@@ -204,15 +188,10 @@ class _SignUpViewState extends State<SignUpView> {
 
   AutoSizeText buildHeaderText() {
     String _headerText;
-<<<<<<< HEAD
-    if (authFormType == AuthFormType.signUp) {
-      _headerText = "Create New Account";
-=======
     if (authFormType == AuthFormType.signIn) {
       _headerText = "Sign In";
     } else if (authFormType == AuthFormType.reset) {
       _headerText = "Reset Password";
->>>>>>> episode_22
     } else {
       _headerText = "Create New Account";
     }
@@ -282,18 +261,13 @@ class _SignUpViewState extends State<SignUpView> {
 
   List<Widget> buildButtons() {
     String _switchButtonText, _newFormState, _submitButtonText;
-<<<<<<< HEAD
-=======
     bool _showForgotPassword = false;
     bool _showSocial = true;
->>>>>>> episode_22
 
     if (authFormType == AuthFormType.signIn) {
       _switchButtonText = "Create New Account";
       _newFormState = "signUp";
       _submitButtonText = "Sign In";
-<<<<<<< HEAD
-=======
       _showForgotPassword = true;
     } else if (authFormType == AuthFormType.reset) {
       _switchButtonText = "Return to Sign In";
@@ -304,7 +278,6 @@ class _SignUpViewState extends State<SignUpView> {
       _switchButtonText = "Cancel";
       _newFormState = "home";
       _submitButtonText = "Sign Up";
->>>>>>> episode_22
     } else {
       _switchButtonText = "Have an Account? Sign In";
       _newFormState = "signIn";
@@ -341,8 +314,6 @@ class _SignUpViewState extends State<SignUpView> {
       buildSocialIcons(_showSocial),
     ];
   }
-<<<<<<< HEAD
-=======
 
   Widget showForgotPassword(bool visible) {
     return Visibility(
@@ -393,5 +364,4 @@ class _SignUpViewState extends State<SignUpView> {
       visible: visible,
     );
   }
->>>>>>> episode_22
 }

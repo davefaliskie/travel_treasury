@@ -43,8 +43,6 @@ class AuthService {
     return _firebaseAuth.signOut();
   }
 
-<<<<<<< HEAD
-=======
   // Reset Password
   Future sendPasswordResetEmail(String email) async {
     return _firebaseAuth.sendPasswordResetEmail(email: email);
@@ -86,7 +84,6 @@ class AuthService {
     return (await _firebaseAuth.signInWithCredential(credential)).uid;
   }
 
->>>>>>> episode_22
 }
 
 class NameValidator {
