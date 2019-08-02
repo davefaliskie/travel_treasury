@@ -3,11 +3,12 @@ import 'package:travel_budget/services/auth_service.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:travel_budget/widgets/provider_widget.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 
 // TODO move this to tone location
 final primaryColor = const Color(0xFF75A2EA);
 
-enum AuthFormType { signIn, signUp, reset, anonymous }
+enum AuthFormType { signIn, signUp, reset, anonymous, convert }
 
 class SignUpView extends StatefulWidget {
   final AuthFormType authFormType;
@@ -33,6 +34,8 @@ class _SignUpViewState extends State<SignUpView> {
       setState(() {
         authFormType = AuthFormType.signUp;
       });
+    } else if (state == 'home') {
+      Navigator.of(context).pop();
     } else {
       setState(() {
         authFormType = AuthFormType.signIn;
@@ -42,6 +45,9 @@ class _SignUpViewState extends State<SignUpView> {
 
   bool validate() {
     final form = formKey.currentState;
+    if (authFormType == AuthFormType.anonymous) {
+      return true;
+    }
     form.save();
     if (form.validate()) {
       form.save();
@@ -55,22 +61,31 @@ class _SignUpViewState extends State<SignUpView> {
     if (validate()) {
       try {
         final auth = Provider.of(context).auth;
-        if (authFormType == AuthFormType.signIn) {
-          String uid = await auth.signInWithEmailAndPassword(_email, _password);
-          print("Signed In with ID $uid");
-          Navigator.of(context).pushReplacementNamed('/home');
-        } else if (authFormType == AuthFormType.reset) {
-          await auth.sendPasswordResetEmail(_email);
-          print("Password reset email sent");
-          _warning = "A password reset link has been sent to $_email";
-          setState(() {
-            authFormType = AuthFormType.signIn;
-          });
-        } else {
-          String uid = await auth.createUserWithEmailAndPassword(
-              _email, _password, _name);
-          print("Signed up with New ID $uid");
-          Navigator.of(context).pushReplacementNamed('/home');
+        switch (authFormType) {
+          case AuthFormType.signIn:
+            await auth.signInWithEmailAndPassword(_email, _password);
+            Navigator.of(context).pushReplacementNamed('/home');
+            break;
+          case AuthFormType.signUp:
+            await auth.createUserWithEmailAndPassword(
+                _email, _password, _name);
+            Navigator.of(context).pushReplacementNamed('/home');
+            break;
+          case AuthFormType.reset:
+            await auth.sendPasswordResetEmail(_email);
+            _warning = "A password reset link has been sent to $_email";
+            setState(() {
+              authFormType = AuthFormType.signIn;
+            });
+            break;
+          case AuthFormType.anonymous:
+            await auth.singInAnonymously();
+            Navigator.of(context).pushReplacementNamed('/home');
+            break;
+          case AuthFormType.convert:
+            await auth.convertUserWithEmail(_email, _password, _name);
+            Navigator.of(context).pop();
+            break;
         }
       } catch (e) {
         print(e);
@@ -81,35 +96,27 @@ class _SignUpViewState extends State<SignUpView> {
     }
   }
 
-  Future submitAnonymous() async {
-    final auth = Provider.of(context).auth;
-    await auth.singInAnonymously();
-    Navigator.of(context).pushReplacementNamed('/home');
-  }
-
   @override
   Widget build(BuildContext context) {
-    final _width = MediaQuery
-        .of(context)
-        .size
-        .width;
-    final _height = MediaQuery
-        .of(context)
-        .size
-        .height;
+    final _width = MediaQuery.of(context).size.width;
+    final _height = MediaQuery.of(context).size.height;
 
     if (authFormType == AuthFormType.anonymous) {
-      submitAnonymous();
+      submit();
       return Scaffold(
-        backgroundColor: primaryColor,
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            SpinKitDoubleBounce(color: Colors.white,),
-            Text("Loading", style: TextStyle(color: Colors.white),),
-          ],
-        )
-      );
+          backgroundColor: primaryColor,
+          body: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SpinKitDoubleBounce(
+                color: Colors.white,
+              ),
+              Text(
+                "Loading",
+                style: TextStyle(color: Colors.white),
+              ),
+            ],
+          ));
     } else {
       return Scaffold(
         body: Container(
@@ -132,7 +139,7 @@ class _SignUpViewState extends State<SignUpView> {
                       children: buildInputs() + buildButtons(),
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -181,12 +188,12 @@ class _SignUpViewState extends State<SignUpView> {
 
   AutoSizeText buildHeaderText() {
     String _headerText;
-    if (authFormType == AuthFormType.signUp) {
-      _headerText = "Create New Account";
+    if (authFormType == AuthFormType.signIn) {
+      _headerText = "Sign In";
     } else if (authFormType == AuthFormType.reset) {
       _headerText = "Reset Password";
     } else {
-      _headerText = "Sign In";
+      _headerText = "Create New Account";
     }
     return AutoSizeText(
       _headerText,
@@ -215,7 +222,7 @@ class _SignUpViewState extends State<SignUpView> {
     }
 
     // if were in the sign up state add name
-    if (authFormType == AuthFormType.signUp) {
+    if ([AuthFormType.signUp, AuthFormType.convert].contains(authFormType)) {
       textFields.add(
         TextFormField(
           validator: NameValidator.validate,
@@ -267,6 +274,7 @@ class _SignUpViewState extends State<SignUpView> {
   List<Widget> buildButtons() {
     String _switchButtonText, _newFormState, _submitButtonText;
     bool _showForgotPassword = false;
+    bool _showSocial = true;
 
     if (authFormType == AuthFormType.signIn) {
       _switchButtonText = "Create New Account";
@@ -277,6 +285,11 @@ class _SignUpViewState extends State<SignUpView> {
       _switchButtonText = "Return to Sign In";
       _newFormState = "signIn";
       _submitButtonText = "Submit";
+      _showSocial = false;
+    } else if (authFormType == AuthFormType.convert) {
+      _switchButtonText = "Cancel";
+      _newFormState = "home";
+      _submitButtonText = "Sign Up";
     } else {
       _switchButtonText = "Have an Account? Sign In";
       _newFormState = "signIn";
@@ -310,7 +323,8 @@ class _SignUpViewState extends State<SignUpView> {
         onPressed: () {
           switchFormState(_newFormState);
         },
-      )
+      ),
+      buildSocialIcons(_showSocial),
     ];
   }
 
@@ -326,6 +340,39 @@ class _SignUpViewState extends State<SignUpView> {
             authFormType = AuthFormType.reset;
           });
         },
+      ),
+      visible: visible,
+    );
+  }
+
+  Widget buildSocialIcons(bool visible) {
+    final _auth = Provider.of(context).auth;
+    return Visibility(
+      child: Column(
+        children: <Widget>[
+          Divider(
+            color: Colors.white,
+          ),
+          SizedBox(height: 10),
+          GoogleSignInButton(
+            onPressed: () async {
+              try {
+                if(authFormType == AuthFormType.convert) {
+                  await _auth.converWithGoogle();
+                  Navigator.of(context).pop();
+                } else {
+                  await _auth.signInWithGoogle();
+                  Navigator.of(context).pushReplacementNamed('/home');
+                }
+              } catch (e) {
+                setState(() {
+                  print(e);
+                  _warning = e.message;
+                });
+              }
+            },
+          )
+        ],
       ),
       visible: visible,
     );

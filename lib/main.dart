@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'home_widget.dart';
+import 'package:travel_budget/views/navigation_view.dart';
 import 'package:travel_budget/views/first_view.dart';
 import 'package:travel_budget/views/sign_up_view.dart';
 import 'package:travel_budget/widgets/provider_widget.dart';
@@ -19,10 +19,11 @@ class MyApp extends StatelessWidget {
         ),
         home: HomeController(),
         routes: <String, WidgetBuilder>{
+          '/home': (BuildContext context) => HomeController(),
           '/signUp': (BuildContext context) => SignUpView(authFormType: AuthFormType.signUp),
           '/signIn': (BuildContext context) => SignUpView(authFormType: AuthFormType.signIn),
           '/anonymousSignIn': (BuildContext context) => SignUpView(authFormType: AuthFormType.anonymous),
-          '/home': (BuildContext context) => HomeController(),
+          '/convertUser': (BuildContext context) => SignUpView(authFormType: AuthFormType.convert),
         },
       ),
     );
