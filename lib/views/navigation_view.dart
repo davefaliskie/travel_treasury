@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'pages.dart';
+import 'package:travel_budget/pages.dart';
 import 'package:travel_budget/views/home_view.dart';
 import 'package:travel_budget/views/new_trips/location_view.dart';
 import 'package:travel_budget/models/Trip.dart';
@@ -49,6 +49,12 @@ class _HomeState extends State<Home> {
               } catch (e) {
                 print (e);
               }
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.account_circle),
+            onPressed: () {
+              Navigator.of(context).pushNamed('/convertUser');
             },
           )
           
