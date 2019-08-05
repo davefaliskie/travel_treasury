@@ -26,7 +26,7 @@ class _SignUpViewState extends State<SignUpView> {
   _SignUpViewState({this.authFormType});
 
   final formKey = GlobalKey<FormState>();
-  String _email, _password, _name, _error;
+  String _email, _password, _name, _warning;
 
   void switchFormState(String state) {
     formKey.currentState.reset();
@@ -73,8 +73,8 @@ class _SignUpViewState extends State<SignUpView> {
             break;
           case AuthFormType.reset:
             await auth.sendPasswordResetEmail(_email);
-            _warning = "A password reset link has been sent to $_email";
             setState(() {
+              _warning = "A password reset link has been sent to $_email";
               authFormType = AuthFormType.signIn;
             });
             break;
@@ -90,7 +90,7 @@ class _SignUpViewState extends State<SignUpView> {
       } catch (e) {
         print(e);
         setState(() {
-          _error = e.message;
+          _warning = e.message;
         });
       }
     }
@@ -149,7 +149,7 @@ class _SignUpViewState extends State<SignUpView> {
   }
 
   Widget showAlert() {
-    if (_error != null) {
+    if (_warning != null) {
       return Container(
         color: Colors.amberAccent,
         width: double.infinity,
@@ -162,7 +162,7 @@ class _SignUpViewState extends State<SignUpView> {
             ),
             Expanded(
               child: AutoSizeText(
-                _error,
+                _warning,
                 maxLines: 3,
               ),
             ),
@@ -172,7 +172,7 @@ class _SignUpViewState extends State<SignUpView> {
                 icon: Icon(Icons.close),
                 onPressed: () {
                   setState(() {
-                    _error = null;
+                    _warning = null;
                   });
                 },
               ),
