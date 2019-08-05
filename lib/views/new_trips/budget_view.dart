@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:travel_budget/models/Trip.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:travel_budget/widgets/provider_widget.dart';
 
 class NewTripBudgetView extends StatelessWidget {
   final db = Firestore.instance;
@@ -28,8 +29,8 @@ class NewTripBudgetView extends StatelessWidget {
                   child: Text("Finish"),
                   onPressed: () async {
                     // save data to fiebase
-                    await db.collection("trips").add(trip.toJson());
-                    
+                    final uid = await Provider.of(context).auth.getCurrentUID();
+                    await db.collection("userData").document(uid).collection("trips").add(trip.toJson());
                     Navigator.of(context).popUntil((route) => route.isFirst);
                   },
                 ),
