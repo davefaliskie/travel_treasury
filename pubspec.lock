@@ -63,7 +63,7 @@ packages:
       name: firebase_auth
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.11.1+12"
+    version: "0.12.0+1"
   firebase_core:
     dependency: transitive
     description:
