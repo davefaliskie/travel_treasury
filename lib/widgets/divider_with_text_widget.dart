@@ -12,7 +12,7 @@ class DividerWithText extends StatelessWidget {
           padding: const EdgeInsets.only(right:8.0),
           child: Divider(),
         )),
-        Text("Suggestions"),
+        Text(dividerText),
         Expanded(child: Padding(
           padding: const EdgeInsets.only(left: 8.0),
           child: Divider(),
