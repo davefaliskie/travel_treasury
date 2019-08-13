@@ -72,3 +72,4 @@
 
 *google-services.json
 *GoogleService-Info.plist
+*lib/credentials.dart

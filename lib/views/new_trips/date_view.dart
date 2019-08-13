@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:travel_budget/models/Trip.dart';
 import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 import 'package:intl/intl.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'dart:async';
 
 import 'budget_view.dart';
@@ -105,7 +106,11 @@ class _NewTripDateViewState extends State<NewTripDateView> {
                         children: <Widget>[
                           Row(
                             children: <Widget>[
-                              Text(trip.title, style: TextStyle(fontSize: 30.0)),
+                              Flexible(
+                                child: AutoSizeText(trip.title, 
+                                    maxLines: 3,
+                                    style: TextStyle(fontSize: 25.0)),
+                              ),
                             ],
                           ),
                           Row(
