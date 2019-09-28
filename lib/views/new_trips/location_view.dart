@@ -188,14 +188,3 @@ class _NewTripLocationViewState extends State<NewTripLocationView> {
     );
   }
 }
-
-//RaisedButton(
-//child: Text("Continue"),
-//onPressed: () {
-//trip.title = _titleController.text;
-//Navigator.push(
-//context,
-//MaterialPageRoute(builder: (context) => NewTripDateView(trip: trip)),
-//);
-//},
-//),

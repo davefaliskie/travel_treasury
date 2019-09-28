@@ -3,6 +3,7 @@ class Trip {
   DateTime startDate;
   DateTime endDate;
   double budget;
+  Map budgetTypes;
   String travelType;
 
 
@@ -11,6 +12,7 @@ class Trip {
       this.startDate,
       this.endDate,
       this.budget,
+      this.budgetTypes,
       this.travelType
       );
 
@@ -19,6 +21,7 @@ class Trip {
     'startDate': startDate,
     'endDate': endDate,
     'budget': budget,
+    'budgetTypes': budgetTypes,
     'travelType': travelType,
   };
 }

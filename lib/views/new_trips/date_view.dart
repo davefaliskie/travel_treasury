@@ -115,7 +115,7 @@ class _NewTripDateViewState extends State<NewTripDateView> {
                           ),
                           Row(
                             children: <Widget>[
-                              Text("Average Budget -- Not set up yet®"),
+                              Text("Average Budget -- Not set up yet"),
                             ],
                           ),
                           Row(
