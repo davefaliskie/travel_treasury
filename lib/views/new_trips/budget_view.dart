@@ -29,6 +29,7 @@ class _NewTripBudgetViewState extends State<NewTripBudgetView> {
   @override
   void initState() {
     super.initState();
+    _budgetController.addListener(_setBudgetTotal);
     _transportationController.addListener(_setTotalBudget);
     _foodController.addListener(_setTotalBudget);
     _lodgingController.addListener(_setTotalBudget);
@@ -47,18 +48,30 @@ class _NewTripBudgetViewState extends State<NewTripBudgetView> {
     });
   }
 
+  _setBudgetTotal() {
+    setState(() {
+      _budgetTotal = int.parse(_budgetController.text);
+    });
+  }
+
 
   List<Widget> setBudgetFields(_budgetController) {
     List<Widget> fields = [];
 
     if (_budgetState == budgetType.simple) {
       _switchButtonText = "Build Budget";
-      fields.add(Text("Enter a Trip Budget"));
+      fields.add(Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Text("Enter a Trip Budget"),
+      ));
       fields.add(generateTextField(_budgetController, "Daily estimated budget"));
     } else {
       // assumes complex budget
       _switchButtonText = "Simple Budget";
-      fields.add(Text("Enter How much you want to spend in each area"));
+      fields.add(Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Text("Enter How much you want to spend in each area"),
+      ));
       fields.add(generateTextField(_transportationController, "Daily Estimated Transportation Budget"));
       fields.add(generateTextField(_foodController, "Daily Estimated Food Budget"));
       fields.add(generateTextField(_lodgingController, "Daily Estimated Lodging Budget"));
@@ -108,6 +121,8 @@ class _NewTripBudgetViewState extends State<NewTripBudgetView> {
   @override
   Widget build(BuildContext context) {
     _budgetController.text = (_budgetController.text == "0") ? "" : _budgetTotal.toString();
+    _budgetController.selection = TextSelection.collapsed(offset: _budgetController.text.length);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Create Trip - Budget'),
