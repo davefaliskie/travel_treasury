@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:travel_budget/widgets/provider_widget.dart';
+import 'package:travel_budget/models/Trip.dart';
 
 
 class HomeView extends StatelessWidget {
@@ -28,7 +29,10 @@ class HomeView extends StatelessWidget {
     yield* Firestore.instance.collection('userData').document(uid).collection('trips').snapshots();
   }
 
-  Widget buildTripCard(BuildContext context, DocumentSnapshot trip) {
+  Widget buildTripCard(BuildContext context, DocumentSnapshot document) {
+    final trip = Trip.fromSnapshot(document);
+    final tripType = trip.types();
+
     return new Container(
       child: Card(
         child: Padding(
@@ -38,7 +42,7 @@ class HomeView extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
                 child: Row(children: <Widget>[
-                  Text(trip['title'], style: new TextStyle(fontSize: 30.0),),
+                  Text(trip.title, style: new TextStyle(fontSize: 30.0),),
                   Spacer(),
                 ]),
               ),
@@ -46,7 +50,7 @@ class HomeView extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 4.0, bottom: 80.0),
                 child: Row(children: <Widget>[
                   Text(
-                      "${DateFormat('dd/MM/yyyy').format(trip['startDate'].toDate()).toString()} - ${DateFormat('dd/MM/yyyy').format(trip['endDate'].toDate()).toString()}"),
+                      "${DateFormat('dd/MM/yyyy').format(trip.startDate).toString()} - ${DateFormat('dd/MM/yyyy').format(trip.endDate).toString()}"),
                   Spacer(),
                 ]),
               ),
@@ -54,9 +58,9 @@ class HomeView extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
                 child: Row(
                   children: <Widget>[
-                    Text("\$${(trip['budget'] == null)? "n/a" : trip['budget'].toStringAsFixed(2)}", style: new TextStyle(fontSize: 35.0),),
+                    Text("\$${(trip.budget == null)? "n/a" : trip.budget.toStringAsFixed(2)}", style: new TextStyle(fontSize: 35.0),),
                     Spacer(),
-                    Icon(Icons.directions_car),
+                    (tripType.containsKey(trip.travelType))? tripType[trip.travelType]: tripType["other"],
                   ],
                 ),
               )
