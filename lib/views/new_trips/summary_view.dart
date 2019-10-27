@@ -23,10 +23,13 @@ class NewTripSummaryView extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text("Finish"),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Text("Submit", style: TextStyle(fontSize: 20, color: Colors.green),),
+                ),
                 Text("${trip.title}"),
                 Text("${DateFormat('dd/MM/yyyy').format(trip.startDate).toString()} - ${DateFormat('dd/MM/yyyy').format(trip.endDate).toString()}"),
-                Text("${trip.budget}"),
+                Text("\$${trip.budget.toStringAsFixed(2)}"),
 
                 Expanded(
                   child: GridView.count(
