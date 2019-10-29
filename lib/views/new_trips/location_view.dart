@@ -28,11 +28,11 @@ class _NewTripLocationViewState extends State<NewTripLocationView> {
   String _heading;
   List<Place> _placesList;
   final List<Place> _suggestedList = [
-    Place("New York", 320.00),
-    Place("Austin", 250.00),
-    Place("Boston", 290.00),
-    Place("Florence", 300.00),
-    Place("Washington D.C.", 190.00),
+//    Place("New York", 320.00),
+//    Place("Austin", 250.00),
+//    Place("Boston", 290.00),
+//    Place("Florence", 300.00),
+//    Place("Washington D.C.", 190.00),
   ];
 
   @override
@@ -57,10 +57,6 @@ class _NewTripLocationViewState extends State<NewTripLocationView> {
       });
     }
     getLocationResults(_searchController.text);
-//    if (_throttle?.isActive ?? false) _throttle.cancel();
-//    _throttle = Timer(const Duration(milliseconds: 500), () {
-//      getLocationResults(_searchController.text);
-//    });
   }
 
   void getLocationResults(String input) async {
@@ -73,27 +69,32 @@ class _NewTripLocationViewState extends State<NewTripLocationView> {
 
     String baseURL = 'https://maps.googleapis.com/maps/api/place/autocomplete/json';
     String type = '(regions)';
-    // TODO Add session token
-
     String request = '$baseURL?input=$input&key=$PLACES_API_KEY&type=$type&sessiontoken=$_sessionToken';
     Response response = await Dio().get(request);
 
-    print(request);
     final predictions = response.data['predictions'];
 
     List<Place> _displayResults = [];
 
     for (var i=0; i < predictions.length; i++) {
       String name = predictions[i]['description'];
+      String placeId = predictions[i]['place_id'];
+
       // TODO figure out the budget
       double averageBudget = 200.0;
-      _displayResults.add(Place(name, averageBudget));
+      _displayResults.add(Place(name, averageBudget, placeId));
     }
 
     setState(() {
       _heading = "Results";
       _placesList = _displayResults;
     });
+  }
+
+  Future<String> getLocationPhotoRef(placeId) async {
+    String placeImgRequest = 'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&fields=photo&key=$PLACES_API_KEY&sessiontoken=$_sessionToken';
+    Response placeDetails = await Dio().get(placeImgRequest);
+    return placeDetails.data["result"]["photos"][0]["photo_reference"];
   }
 
   @override
@@ -171,18 +172,13 @@ class _NewTripLocationViewState extends State<NewTripLocationView> {
                       ),
                     ),
                   ),
-                  Column(
-                    children: <Widget>[
-                      Placeholder(
-                        fallbackHeight: 80,
-                        fallbackWidth: 80,
-                      ),
-                    ],
-                  )
+
                 ],
               ),
-              onTap: () {
+              onTap: () async {
+                String photoReference = await getLocationPhotoRef(_placesList[index].placeId);
                 widget.trip.title = _placesList[index].name;
+                widget.trip.photoReference = photoReference;
                 setState(() {
                   _sessionToken = null;
                 });

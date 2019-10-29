@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-
-
 class Trip {
   String title;
   DateTime startDate;
@@ -10,6 +8,7 @@ class Trip {
   double budget;
   Map budgetTypes;
   String travelType;
+  String photoReference;
 
 
   Trip(
@@ -29,6 +28,7 @@ class Trip {
     'budget': budget,
     'budgetTypes': budgetTypes,
     'travelType': travelType,
+    'photoReference': photoReference,
   };
 
   // creating a Trip object from a firebase snapshot
