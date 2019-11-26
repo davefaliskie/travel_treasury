@@ -38,56 +38,126 @@ class _NewTripDateViewState extends State<NewTripDateView> {
 
   Image getImage(photoReference) {
     final baseUrl = "https://maps.googleapis.com/maps/api/place/photo";
-    final maxWidth = "400";
+    final maxWidth = "1000";
     final maxHeight = "200";
-    final url = "$baseUrl?maxwidth=$maxWidth&maxheight=$maxHeight&photoreference=$photoReference&key=$PLACES_API_KEY";
-    return Image.network(url);
+    final url = "$baseUrl?maxwidth=$maxWidth&photoreference=$photoReference&key=$PLACES_API_KEY";
+    return Image.network(url, fit: BoxFit.cover);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Create Trip - Date'),
-      ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            getImage(widget.trip.photoReference),
-            buildSelectedDetails(context, widget.trip),
-
-            Spacer(),
-            Text("Location ${widget.trip.title}"),
-            RaisedButton(
-              child: Text("Select Dates"),
-              onPressed: () async {
-                await displayDateRangePicker(context);
-              },
+        child: CustomScrollView(
+          slivers: <Widget>[
+            SliverAppBar(
+              title: Text(''),
+              backgroundColor: Colors.green,
+              expandedHeight: 350.0,
+              flexibleSpace: FlexibleSpaceBar(
+                background: getImage(widget.trip.photoReference),
+              ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
+            SliverFixedExtentList(
+              itemExtent: 200.00,
+              delegate: SliverChildListDelegate([
+                buildSelectedDetails(context, widget.trip),
+                buildButtons(),
+              ]),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildButtons() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        SizedBox(
+          width: MediaQuery.of(context).size.width * 0.60,
+          child: RaisedButton(
+            child: Text("Change Date Range"),
+            color: Colors.deepPurpleAccent,
+            textColor: Colors.white,
+            onPressed: () async {
+              await displayDateRangePicker(context);
+            },
+          ),
+        ),
+        SizedBox(
+          width: MediaQuery.of(context).size.width * 0.60,
+          child: RaisedButton(
+            child: Text('Continue'),
+            color: Colors.amberAccent,
+            onPressed: () {
+              widget.trip.startDate = _startDate;
+              widget.trip.endDate = _endDate;
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => NewTripBudgetView(
+                    trip: widget.trip,
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildingSelectedDates() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 15.0),
+      child: Container(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text("Start Date"),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Text(
+                    "${DateFormat('MM-dd').format(_startDate).toString()}",
+                    style: TextStyle(fontSize: 35, color: Colors.deepPurple),
+                  ),
+                ),
                 Text(
-                    "Start Date: ${DateFormat('MM/dd/yyyy').format(_startDate).toString()}"),
-                Text(
-                    "End Date: ${DateFormat('MM/dd/yyyy').format(_endDate).toString()}"),
+                  "${DateFormat('yyyy').format(_startDate).toString()}",
+                  style: TextStyle(color: Colors.deepPurple),
+                ),
               ],
             ),
-            RaisedButton(
-              child: Text("Continue"),
-              onPressed: () {
-                widget.trip.startDate = _startDate;
-                widget.trip.endDate = _endDate;
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          NewTripBudgetView(trip: widget.trip)),
-                );
-              },
+            Container(
+                child: Icon(
+                  Icons.arrow_forward,
+                  color: Colors.deepOrange,
+                  size: 45,
+                )),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text("End Date"),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Text(
+                    "${DateFormat('MM-dd').format(_endDate).toString()}",
+                    style: TextStyle(fontSize: 35, color: Colors.deepPurple),
+                  ),
+                ),
+                Text(
+                  "${DateFormat('yyyy').format(_endDate).toString()}",
+                  style: TextStyle(color: Colors.deepPurple),
+                ),
+              ],
             ),
-            Spacer(),
           ],
         ),
       ),
@@ -123,26 +193,7 @@ class _NewTripDateViewState extends State<NewTripDateView> {
                               ),
                             ],
                           ),
-                          Row(
-                            children: <Widget>[
-                              Text("Average Budget -- Not set up yet"),
-                            ],
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Text("Trip Dates"),
-                            ],
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Text("Trip Budget"),
-                            ],
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Text("Trip Type"),
-                            ],
-                          ),
+                          buildingSelectedDates(),
                         ],
                       ),
                     ),
