@@ -50,7 +50,7 @@ class _NewTripBudgetViewState extends State<NewTripBudgetView> {
 
   _setBudgetTotal() {
     setState(() {
-      _budgetTotal = int.parse(_budgetController.text);
+      _budgetTotal = (_budgetController.text == "") ? 0 : int.parse(_budgetController.text);
     });
   }
 
@@ -120,7 +120,7 @@ class _NewTripBudgetViewState extends State<NewTripBudgetView> {
 
   @override
   Widget build(BuildContext context) {
-    _budgetController.text = (_budgetController.text == "0") ? "" : _budgetTotal.toString();
+    _budgetController.text = (_budgetController.text == "") ? "" : _budgetTotal.toString();
     _budgetController.selection = TextSelection.collapsed(offset: _budgetController.text.length);
 
     return Scaffold(
