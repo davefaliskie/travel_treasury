@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:travel_budget/credentials.dart';
+
 
 class Trip {
   String title;
@@ -38,7 +40,8 @@ class Trip {
       endDate = snapshot['endDate'].toDate(),
       budget = snapshot['budget'],
       budgetTypes = snapshot['budgetTypes'],
-      travelType = snapshot['travelType'];
+      travelType = snapshot['travelType'],
+      photoReference = snapshot['photoReference'];
 
 
 
@@ -50,5 +53,13 @@ class Trip {
     "ship": Icon(Icons.directions_boat, size: 50),
     "other": Icon(Icons.directions, size: 50),
   };
+
+  // return the google places image
+  Image getLocationImage() {
+    final baseUrl = "https://maps.googleapis.com/maps/api/place/photo";
+    final maxWidth = "1000";
+    final url = "$baseUrl?maxwidth=$maxWidth&photoreference=$photoReference&key=$PLACES_API_KEY";
+    return Image.network(url, fit: BoxFit.cover);
+  }
 }
 
