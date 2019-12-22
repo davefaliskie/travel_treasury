@@ -1,3 +1,4 @@
+import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -86,6 +87,46 @@ class AuthService {
         accessToken: _googleAuth.accessToken,
     );
     return (await _firebaseAuth.signInWithCredential(credential)).user.uid;
+  }
+
+  // APPLE
+  Future signInWithApple() async {
+    final AuthorizationResult result = await AppleSignIn.performRequests([
+      AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
+    ]);
+
+    switch (result.status) {
+      case AuthorizationStatus.authorized:
+
+        final AppleIdCredential _auth = result.credential;
+        final OAuthProvider oAuthProvider = new OAuthProvider(providerId: "apple.com");
+
+        final AuthCredential credential = oAuthProvider.getCredential(
+            idToken: String.fromCharCodes(_auth.identityToken),
+            accessToken: String.fromCharCodes(_auth.authorizationCode),
+        );
+
+        await _firebaseAuth.signInWithCredential(credential);
+
+        // update the user information
+        if (_auth.fullName != null) {
+          _firebaseAuth.currentUser().then( (value) async {
+            UserUpdateInfo user = UserUpdateInfo();
+            user.displayName = "${_auth.fullName.givenName} ${_auth.fullName.familyName}";
+            await value.updateProfile(user);
+          });
+        }
+
+        break;
+
+      case AuthorizationStatus.error:
+        print("Sign In Failed ${result.error.localizedDescription}");
+        break;
+
+      case AuthorizationStatus.cancelled:
+        print("User Cancled");
+        break;
+    }
   }
 
 }
