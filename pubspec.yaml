@@ -36,6 +36,7 @@ dependencies:
   dio: ^2.1.13
   uuid: 2.0.1
   device_info: ^0.4.1+4
+  google_fonts: ^0.3.2
 
 
 dev_dependencies:

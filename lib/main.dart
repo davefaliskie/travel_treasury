@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:travel_budget/views/navigation_view.dart';
 import 'package:travel_budget/views/first_view.dart';
 import 'package:travel_budget/views/sign_up_view.dart';
@@ -15,7 +16,11 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: "Travel Budget App",
         theme: ThemeData(
-          primarySwatch: Colors.green,
+          primarySwatch: Colors.blue,
+
+          textTheme: TextTheme(
+            body1: GoogleFonts.bitter(fontSize: 14.0)
+          )
         ),
         home: HomeController(),
         routes: <String, WidgetBuilder>{
