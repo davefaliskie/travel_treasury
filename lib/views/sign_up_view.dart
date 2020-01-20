@@ -260,15 +260,18 @@ class _SignUpViewState extends State<SignUpView> {
       ),
     );
     textFields.add(SizedBox(height: 20));
-    textFields.add(
-      TextFormField(
-        validator: PasswordValidator.validate,
-        style: TextStyle(fontSize: 22.0),
-        decoration: buildSignUpInputDecoration("Password"),
-        obscureText: true,
-        onSaved: (value) => _password = value,
-      ),
-    );
+
+    if(authFormType != AuthFormType.reset) {
+      textFields.add(
+        TextFormField(
+          validator: PasswordValidator.validate,
+          style: TextStyle(fontSize: 22.0),
+          decoration: buildSignUpInputDecoration("Password"),
+          obscureText: true,
+          onSaved: (value) => _password = value,
+        ),
+      );
+    }
     textFields.add(SizedBox(height: 20));
 
     return textFields;
@@ -330,6 +333,7 @@ class _SignUpViewState extends State<SignUpView> {
           onPressed: submit,
         ),
       ),
+      showForgotPassword(_showForgotPassword),
       FlatButton(
         child: Text(
           _switchButtonText,
