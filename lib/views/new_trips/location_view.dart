@@ -92,7 +92,7 @@ class _NewTripLocationViewState extends State<NewTripLocationView> {
   }
 
   Future<String> getLocationPhotoRef(placeId) async {
-    String placeImgRequest = 'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&fields=photo&key=$PLACES_API_KEY&sessiontoken=$_sessionToken';
+    String placeImgRequest = 'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&fields=photo,geometry&key=$PLACES_API_KEY&sessiontoken=$_sessionToken';
     Response placeDetails = await Dio().get(placeImgRequest);
     return placeDetails.data["result"]["photos"][0]["photo_reference"];
   }
