@@ -40,25 +40,6 @@ class _HomeState extends State<Home> {
               );
             },
           ),
-//          IconButton(
-//            icon: Icon(Icons.undo),
-//            onPressed: () async {
-//              try {
-//                AuthService auth = Provider.of(context).auth;
-//                await auth.signOut();
-//                print("Signed Out!");
-//              } catch (e) {
-//                print (e);
-//              }
-//            },
-//          ),
-//          IconButton(
-//            icon: Icon(Icons.account_circle),
-//            onPressed: () {
-//              Navigator.of(context).pushNamed('/convertUser');
-//            },
-//          )
-          
         ],
       ),
       body: _children[_currentIndex],
