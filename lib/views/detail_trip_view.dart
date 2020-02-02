@@ -1,13 +1,30 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:travel_budget/models/Trip.dart';
+import 'package:travel_budget/widgets/provider_widget.dart';
 import 'edit_notes_view.dart';
 import 'package:intl/intl.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:travel_budget/widgets/money_text_field.dart';
 
-class DetailTripView extends StatelessWidget {
+class DetailTripView extends StatefulWidget {
   final Trip trip;
 
   DetailTripView({Key key, @required this.trip}) : super(key: key);
+
+  @override
+  _DetailTripViewState createState() => _DetailTripViewState();
+}
+
+class _DetailTripViewState extends State<DetailTripView> {
+  TextEditingController _budgetController = TextEditingController();
+  var _budget;
+
+  void initState() {
+    super.initState();
+    _budgetController.text = widget.trip.budget.toStringAsFixed(0);
+    _budget = widget.trip.budget.floor();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,11 +37,15 @@ class DetailTripView extends StatelessWidget {
               backgroundColor: Colors.green,
               expandedHeight: 350.0,
               flexibleSpace: FlexibleSpaceBar(
-                background: trip.getLocationImage(),
+                background: widget.trip.getLocationImage(),
               ),
               actions: <Widget>[
                 IconButton(
-                  icon: Icon(Icons.settings, color: Colors.white, size: 30,),
+                  icon: Icon(
+                    Icons.settings,
+                    color: Colors.white,
+                    size: 30,
+                  ),
                   padding: const EdgeInsets.only(right: 15),
                   onPressed: () {
                     _tripEditModalBottomSheet(context);
@@ -49,7 +70,6 @@ class DetailTripView extends StatelessWidget {
     );
   }
 
-  // DAYS TILL TRIP CARD
   Widget daysOutCard() {
     return Card(
       color: Colors.amberAccent,
@@ -66,7 +86,6 @@ class DetailTripView extends StatelessWidget {
     );
   }
 
-  // TRIP DETAILS
   Widget tripDetails() {
     return Card(
       child: Column(
@@ -76,7 +95,7 @@ class DetailTripView extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  trip.title,
+                  widget.trip.title,
                   style: TextStyle(fontSize: 30, color: Colors.green[900]),
                 ),
               ),
@@ -87,7 +106,7 @@ class DetailTripView extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
                 child: Text(
-                    "${DateFormat('MM/dd/yyyy').format(trip.startDate).toString()} - ${DateFormat('MM/dd/yyyy').format(trip.endDate).toString()}"),
+                    "${DateFormat('MM/dd/yyyy').format(widget.trip.startDate).toString()} - ${DateFormat('MM/dd/yyyy').format(widget.trip.endDate).toString()}"),
               ),
             ],
           ),
@@ -96,7 +115,6 @@ class DetailTripView extends StatelessWidget {
     );
   }
 
-  // BUDGET CARD
   Widget totalBudgetCard() {
     return Card(
       color: Colors.blue,
@@ -119,7 +137,7 @@ class DetailTripView extends StatelessWidget {
               children: <Widget>[
                 Flexible(
                   child: AutoSizeText(
-                    "\$${trip.budget.floor()}",
+                    "\$$_budget",
                     style: TextStyle(fontSize: 100),
                     maxLines: 1,
                   ),
@@ -136,7 +154,7 @@ class DetailTripView extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(
                         vertical: 10.0, horizontal: 20),
                     child: Text(
-                      "\$${trip.budget.floor() * getTotalTripDays()} total",
+                      "\$${_budget * getTotalTripDays()} total",
                       style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
                   ),
@@ -149,10 +167,9 @@ class DetailTripView extends StatelessWidget {
     );
   }
 
-  // NOTES CARD
   Widget notesCard(context) {
     return Hero(
-      tag: "TripNotes-${trip.title}",
+      tag: "TripNotes-${widget.trip.title}",
       transitionOnUserGestures: true,
       child: Card(
         color: Colors.deepPurpleAccent,
@@ -180,7 +197,7 @@ class DetailTripView extends StatelessWidget {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => EditNotesView(trip: trip)));
+                    builder: (context) => EditNotesView(trip: widget.trip)));
           },
         ),
       ),
@@ -188,7 +205,7 @@ class DetailTripView extends StatelessWidget {
   }
 
   List<Widget> setNoteText() {
-    if (trip.notes == null) {
+    if (widget.trip.notes == null) {
       return [
         Padding(
           padding: const EdgeInsets.only(right: 8.0),
@@ -197,56 +214,127 @@ class DetailTripView extends StatelessWidget {
         Text("Click To Add Notes", style: TextStyle(color: Colors.grey[300])),
       ];
     } else {
-      return [Text(trip.notes, style: TextStyle(color: Colors.grey[300]))];
+      return [
+        Text(widget.trip.notes, style: TextStyle(color: Colors.grey[300]))
+      ];
     }
   }
 
   int getTotalTripDays() {
-    return trip.endDate.difference(trip.startDate).inDays;
+    return widget.trip.endDate.difference(widget.trip.startDate).inDays;
   }
 
   int getDaysUntilTrip() {
-    int diff = trip.startDate.difference(DateTime.now()).inDays;
+    int diff = widget.trip.startDate.difference(DateTime.now()).inDays;
     if (diff < 0) {
       diff = 0;
     }
     return diff;
   }
 
-  // Edit Modal
   void _tripEditModalBottomSheet(context) {
-    showModalBottomSheet(context: context, builder: (BuildContext bc) {
-      return Container(
-        height: MediaQuery.of(context).size.height * .60,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Text("Edit Trip"),
-                  Spacer(),
-                  IconButton(
-                    icon: Icon(Icons.cancel, color: Colors.orange, size: 25,),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  )
-
-                ],
-              ),
-              Row(
-                children: [
-                  Text(
-                    trip.title,
-                    style: TextStyle(fontSize: 30, color: Colors.green[900]),
-                  ),
-                ]
-              )
-            ],
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext bc) {
+        return Container(
+          height: MediaQuery.of(context).size.height * .60,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Text("Edit Trip"),
+                    Spacer(),
+                    IconButton(
+                      icon: Icon(
+                        Icons.cancel,
+                        color: Colors.orange,
+                        size: 25,
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    )
+                  ],
+                ),
+                Row(
+                  children: [
+                    Text(
+                      widget.trip.title,
+                      style: TextStyle(fontSize: 30, color: Colors.green[900]),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: MoneyTextField(
+                        controller: _budgetController,
+                        helperText: "Budget",
+                      ),
+                    )
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    RaisedButton(
+                      child: Text('Submit'),
+                      color: Colors.deepPurple,
+                      textColor: Colors.white,
+                      onPressed: () async {
+                        widget.trip.budget = double.parse(_budgetController.text);
+                        setState(() {
+                          _budget = widget.trip.budget.floor();
+                        });
+                        await updateTrip(context);
+                        Navigator.of(context).pop();
+                      },
+                    )
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    RaisedButton(
+                      child: Text('Delete'),
+                      color: Colors.red,
+                      textColor: Colors.white,
+                      onPressed: () async {
+                        await deleteTrip(context);
+                        Navigator.of(context).pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
+                      },
+                    )
+                  ],
+                )
+              ],
+            ),
           ),
-        )
-      );
-    });
+        );
+      },
+    );
+  }
+
+  Future updateTrip(context) async {
+    var uid = await Provider.of(context).auth.getCurrentUID();
+    final doc = Firestore.instance
+        .collection('userData')
+        .document(uid)
+        .collection("trips")
+        .document(widget.trip.documentId);
+
+    return await doc.setData(widget.trip.toJson());
+  }
+
+  Future deleteTrip(context) async {
+    var uid = await Provider.of(context).auth.getCurrentUID();
+    final doc = Firestore.instance
+        .collection('userData')
+        .document(uid)
+        .collection("trips")
+        .document(widget.trip.documentId);
+
+    return await doc.delete();
   }
 }
