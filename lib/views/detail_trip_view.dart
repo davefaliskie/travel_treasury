@@ -22,6 +22,15 @@ class DetailTripView extends StatelessWidget {
               flexibleSpace: FlexibleSpaceBar(
                 background: trip.getLocationImage(),
               ),
+              actions: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.settings, color: Colors.white, size: 30,),
+                  padding: const EdgeInsets.only(right: 15),
+                  onPressed: () {
+                    _tripEditModalBottomSheet(context);
+                  },
+                ),
+              ],
             ),
             SliverList(
               delegate: SliverChildListDelegate([
@@ -202,5 +211,42 @@ class DetailTripView extends StatelessWidget {
       diff = 0;
     }
     return diff;
+  }
+
+  // Edit Modal
+  void _tripEditModalBottomSheet(context) {
+    showModalBottomSheet(context: context, builder: (BuildContext bc) {
+      return Container(
+        height: MediaQuery.of(context).size.height * .60,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Text("Edit Trip"),
+                  Spacer(),
+                  IconButton(
+                    icon: Icon(Icons.cancel, color: Colors.orange, size: 25,),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    trip.title,
+                    style: TextStyle(fontSize: 30, color: Colors.green[900]),
+                  ),
+                ]
+              )
+            ],
+          ),
+        )
+      );
+    });
   }
 }
