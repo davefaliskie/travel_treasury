@@ -7,6 +7,7 @@ import 'package:travel_budget/widgets/provider_widget.dart';
 import 'package:travel_budget/models/Trip.dart';
 import 'detail_trip_view.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:travel_budget/widgets/calculator_widget.dart';
 
 
 
@@ -15,15 +16,22 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: StreamBuilder(
-          stream: getUsersTripsStreamSnapshots(context),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) return const Text("Loading...");
-            return new ListView.builder(
-                itemCount: snapshot.data.documents.length,
-                itemBuilder: (BuildContext context, int index) =>
-                    buildTripCard(context, snapshot.data.documents[index]));
-          }
+      child: Column(
+        children: <Widget>[
+          CalculatorWidget(),
+          Expanded(
+            child: StreamBuilder(
+                stream: getUsersTripsStreamSnapshots(context),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) return const Text("Loading...");
+                  return new ListView.builder(
+                      itemCount: snapshot.data.documents.length,
+                      itemBuilder: (BuildContext context, int index) =>
+                          buildTripCard(context, snapshot.data.documents[index]));
+                }
+            ),
+          ),
+        ],
       ),
     );
   }
