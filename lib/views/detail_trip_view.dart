@@ -6,6 +6,7 @@ import 'edit_notes_view.dart';
 import 'package:intl/intl.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:travel_budget/widgets/money_text_field.dart';
+import 'package:travel_budget/widgets/calculator_widget.dart';
 
 class DetailTripView extends StatefulWidget {
   final Trip trip;
@@ -56,6 +57,7 @@ class _DetailTripViewState extends State<DetailTripView> {
             SliverList(
               delegate: SliverChildListDelegate([
                 tripDetails(),
+                CalculatorWidget(trip: widget.trip),
                 totalBudgetCard(),
                 daysOutCard(),
                 notesCard(context),
@@ -78,7 +80,7 @@ class _DetailTripViewState extends State<DetailTripView> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Text("${getDaysUntilTrip()}", style: TextStyle(fontSize: 75)),
+            Text("${widget.trip.getDaysUntilTrip()}", style: TextStyle(fontSize: 75)),
             Text("days until your trip", style: TextStyle(fontSize: 25))
           ],
         ),
@@ -154,7 +156,7 @@ class _DetailTripViewState extends State<DetailTripView> {
                     padding: const EdgeInsets.symmetric(
                         vertical: 10.0, horizontal: 20),
                     child: Text(
-                      "\$${_budget * getTotalTripDays()} total",
+                      "\$${_budget * widget.trip.getTotalTripDays()} total",
                       style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
                   ),
@@ -220,17 +222,6 @@ class _DetailTripViewState extends State<DetailTripView> {
     }
   }
 
-  int getTotalTripDays() {
-    return widget.trip.endDate.difference(widget.trip.startDate).inDays;
-  }
-
-  int getDaysUntilTrip() {
-    int diff = widget.trip.startDate.difference(DateTime.now()).inDays;
-    if (diff < 0) {
-      diff = 0;
-    }
-    return diff;
-  }
 
   void _tripEditModalBottomSheet(context) {
     showModalBottomSheet(

@@ -13,6 +13,8 @@ class Trip {
   String photoReference;
   String notes;
   String documentId;
+  double saved;
+
 
 
   Trip(
@@ -45,7 +47,8 @@ class Trip {
       travelType = snapshot['travelType'],
       photoReference = snapshot['photoReference'],
       notes = snapshot['notes'],
-      documentId = snapshot.documentID;
+      documentId = snapshot.documentID,
+      saved = snapshot['saved'];
 
 
 
@@ -64,6 +67,18 @@ class Trip {
     final maxWidth = "1000";
     final url = "$baseUrl?maxwidth=$maxWidth&photoreference=$photoReference&key=$PLACES_API_KEY";
     return Image.network(url, fit: BoxFit.cover);
+  }
+
+  int getTotalTripDays() {
+    return endDate.difference(startDate).inDays;
+  }
+
+  int getDaysUntilTrip() {
+    int diff = startDate.difference(DateTime.now()).inDays;
+    if (diff < 0) {
+      diff = 0;
+    }
+    return diff;
   }
 }
 

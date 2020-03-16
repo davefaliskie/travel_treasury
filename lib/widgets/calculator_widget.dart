@@ -1,8 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:travel_budget/widgets/money_text_field.dart';
+import 'package:travel_budget/models/Trip.dart';
+import 'package:travel_budget/widgets/provider_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class CalculatorWidget extends StatelessWidget {
+class CalculatorWidget extends StatefulWidget {
+  final Trip trip;
+
+  CalculatorWidget({
+    @required this.trip,
+  });
+
+  @override
+  _CalculatorWidgetState createState() => _CalculatorWidgetState();
+}
+
+class _CalculatorWidgetState extends State<CalculatorWidget> {
   TextEditingController _moneyController = TextEditingController();
+  int _saved;
+  int _needed;
+
+  @override
+  void initState() {
+    super.initState();
+    _saved = (widget.trip.saved ?? 0.0).floor();
+    _needed = (widget.trip.budget.floor() * widget.trip.getTotalTripDays()) - _saved;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +41,7 @@ class CalculatorWidget extends StatelessWidget {
                 children: <Widget>[
                   Column(
                     children: <Widget>[
-                      Text("\$800", style: TextStyle(fontSize: 60)),
+                      Text("\$$_saved", style: TextStyle(fontSize: 60)),
                       Text("Saved", style: TextStyle(fontSize: 20)),
                     ],
                   ),
@@ -31,7 +54,7 @@ class CalculatorWidget extends StatelessWidget {
                   ),
                   Column(
                     children: <Widget>[
-                      Text("\$200", style: TextStyle(fontSize: 60)),
+                      Text("\$$_needed", style: TextStyle(fontSize: 60)),
                       Text("Needed", style: TextStyle(fontSize: 20)),
                     ],
                   ),
@@ -40,9 +63,9 @@ class CalculatorWidget extends StatelessWidget {
             ),
           ),
           Container(
-            color: Colors.yellow,
+            color: Colors.orangeAccent,
             child: Padding(
-              padding: const EdgeInsets.only(left: 20.0, right: 50.0),
+              padding: const EdgeInsets.only(left: 20.0, right: 40.0),
               child: Row(
                 children: <Widget>[
                   Expanded(
@@ -51,12 +74,38 @@ class CalculatorWidget extends StatelessWidget {
                       helperText: "Save Additional",
                     ),
                   ),
-                  RaisedButton(
-                    child: Text("Saved"),
-                    color: Colors.white,
-                    textColor: Colors.cyan,
-                    onPressed: () {
-                      print("Saved pressed");
+                  IconButton(
+                    icon: Icon(Icons.add_circle),
+                    color: Colors.green,
+                    iconSize: 50,
+                    onPressed: () async {
+                      setState(() {
+                        _saved = _saved + int.parse(_moneyController.text);
+                        _needed = _needed - int.parse(_moneyController.text);
+                      });
+                      final uid = await Provider.of(context).auth.getCurrentUID();
+                      await Firestore.instance.collection('userData')
+                          .document(uid)
+                          .collection('trips')
+                          .document(widget.trip.documentId)
+                          .updateData({'saved': _saved.toDouble()});
+                    },
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.remove_circle),
+                    color: Colors.red,
+                    iconSize: 50,
+                    onPressed: () async {
+                      setState(() {
+                        _saved = _saved - int.parse(_moneyController.text);
+                        _needed = _needed + int.parse(_moneyController.text);
+                      });
+                      final uid = await Provider.of(context).auth.getCurrentUID();
+                      await Firestore.instance.collection('userData')
+                          .document(uid)
+                          .collection('trips')
+                          .document(widget.trip.documentId)
+                          .updateData({'saved': _saved.toDouble()});
                     },
                   )
                 ],
@@ -64,42 +113,42 @@ class CalculatorWidget extends StatelessWidget {
             ),
           ),
           Container(
-            color: Colors.yellow,
+            color: Colors.orangeAccent,
             child: Padding(
               padding: const EdgeInsets.only(bottom: 20.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  RaisedButton(
-                    child: Text("\$25"),
-                    color: Colors.white,
-                    textColor: Colors.cyan,
-                    onPressed: () {
-                      print("25 pressed");
-                    },
-                  ),
-                  RaisedButton(
-                    child: Text("\$50"),
-                    color: Colors.white,
-                    textColor: Colors.cyan,
-                    onPressed: () {
-                      print("25 pressed");
-                    },
-                  ),
-                  RaisedButton(
-                    child: Text("\$100"),
-                    color: Colors.white,
-                    textColor: Colors.cyan,
-                    onPressed: () {
-                      print("25 pressed");
-                    },
-                  )
+                  generateAddMoneyBtn(25),
+                  generateAddMoneyBtn(50),
+                  generateAddMoneyBtn(100),
                 ],
               ),
             ),
           )
         ],
       ),
+    );
+  }
+
+
+  RaisedButton generateAddMoneyBtn(int amount) {
+    return RaisedButton(
+      child: Text("\$$amount"),
+      color: Colors.white,
+      textColor: Colors.deepOrange,
+      onPressed: () async {
+        setState(() {
+          _saved = _saved + amount;
+          _needed = _needed - amount;
+        });
+        final uid = await Provider.of(context).auth.getCurrentUID();
+        await Firestore.instance.collection('userData')
+            .document(uid)
+            .collection('trips')
+            .document(widget.trip.documentId)
+            .updateData({'saved': _saved.toDouble()});
+      },
     );
   }
 }
