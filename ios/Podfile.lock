@@ -158,6 +158,12 @@ PODS:
     - abseil/base/base_internal
     - abseil/base/config
     - abseil/meta/type_traits
+  - admob_flutter (0.3.4):
+    - Firebase/AdMob
+    - Firebase/Analytics
+    - FirebaseAnalytics (~> 6.1.3)
+    - Flutter
+    - Google-Mobile-Ads-SDK (~> 7.50)
   - apple_sign_in (0.0.1):
     - Flutter
   - BoringSSL-GRPC (0.0.3):
@@ -172,6 +178,11 @@ PODS:
     - Flutter
   - device_info (0.0.1):
     - Flutter
+  - Firebase/AdMob (6.13.0):
+    - Firebase/CoreOnly
+    - Google-Mobile-Ads-SDK (~> 7.50)
+  - Firebase/Analytics (6.13.0):
+    - Firebase/Core
   - Firebase/Auth (6.13.0):
     - Firebase/CoreOnly
     - FirebaseAuth (~> 6.4.0)
@@ -238,6 +249,8 @@ PODS:
     - GoogleUtilities/Environment (~> 6.0)
     - GoogleUtilities/UserDefaults (~> 6.0)
   - Flutter (1.0.0)
+  - Google-Mobile-Ads-SDK (7.57.0):
+    - GoogleAppMeasurement (~> 6.0)
   - google_sign_in (0.0.1):
     - Flutter
     - GoogleSignIn (~> 4.0)
@@ -308,6 +321,7 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
+  - admob_flutter (from `.symlinks/plugins/admob_flutter/ios`)
   - apple_sign_in (from `.symlinks/plugins/apple_sign_in/ios`)
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
   - device_info (from `.symlinks/plugins/device_info/ios`)
@@ -331,6 +345,7 @@ SPEC REPOS:
     - FirebaseCoreDiagnosticsInterop
     - FirebaseFirestore
     - FirebaseInstanceID
+    - Google-Mobile-Ads-SDK
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleDataTransportCCTSupport
@@ -344,6 +359,8 @@ SPEC REPOS:
     - nanopb
 
 EXTERNAL SOURCES:
+  admob_flutter:
+    :path: ".symlinks/plugins/admob_flutter/ios"
   apple_sign_in:
     :path: ".symlinks/plugins/apple_sign_in/ios"
   cloud_firestore:
@@ -365,6 +382,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   abseil: 18063d773f5366ff8736a050fe035a28f635fd27
+  admob_flutter: 8033bcca85371a0554aa99d525a83a4770e679f0
   apple_sign_in: 7716c7ddfa195aeab7dec0dc374ef4ff45d1adb4
   BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
   cloud_firestore: 0ac494d23db743f104b95d3291946afec187b74c
@@ -382,6 +400,7 @@ SPEC CHECKSUMS:
   FirebaseFirestore: 2e92e977280d63ecbf3fd58bdbfaf9145abb880f
   FirebaseInstanceID: ebd2ea79ee38db0cb5f5167b17a0d387e1cc7b6e
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  Google-Mobile-Ads-SDK: ec897018b9ab9b447e7aa4876e7f75aba13ba2de
   google_sign_in: 27e70a98b529f0b076d4b19f231b81da28b1750b
   GoogleAppMeasurement: dfe55efa543e899d906309eaaac6ca26d249862f
   GoogleDataTransport: 8e9b210c97d55fbff306cc5468ff91b9cb32dcf5

@@ -4,10 +4,6 @@ import 'package:travel_budget/views/home_view.dart';
 import 'package:travel_budget/views/new_trips/location_view.dart';
 import 'profile_view.dart';
 import 'package:travel_budget/models/Trip.dart';
-import 'package:travel_budget/widgets/provider_widget.dart';
-import 'package:travel_budget/services/auth_service.dart';
-
-
 
 class Home extends StatefulWidget {
   @override

@@ -20,7 +20,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  cloud_firestore: ^0.12.9
+  cloud_firestore: ^0.13.4
   firebase_auth: ^0.15.3
   google_sign_in: ^4.0.4
   apple_sign_in: ^0.1.0
@@ -33,10 +33,11 @@ dependencies:
   auto_size_text: ^2.0.2
   flutter_spinkit: ^3.1.0
   flutter_auth_buttons: ^0.5.0
-  dio: ^2.1.13
+  dio: ^3.0.9
   uuid: 2.0.1
   device_info: ^0.4.1+4
   google_fonts: ^0.3.2
+  admob_flutter: ^0.3.4
 
 
 dev_dependencies:

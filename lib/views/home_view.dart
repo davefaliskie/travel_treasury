@@ -8,7 +8,8 @@ import 'package:travel_budget/models/Trip.dart';
 import 'detail_trip_view.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:travel_budget/widgets/calculator_widget.dart';
-
+import 'package:admob_flutter/admob_flutter.dart';
+import 'package:travel_budget/services/admob_service.dart';
 
 
 class HomeView extends StatefulWidget {
@@ -19,11 +20,18 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   Future _nextTrip;
+  final ams = AdMobService();
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _nextTrip = _getNextTrip();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    Admob.initialize(ams.getAdMobAppId());
   }
 
   @override
@@ -40,6 +48,11 @@ class _HomeViewState extends State<HomeView> {
                 return Text("Loading...");
               }
             },
+          ),
+          // AD Here
+          AdmobBanner(
+            adUnitId: ams.getBannerAdId(),
+            adSize: AdmobBannerSize.FULL_BANNER,
           ),
           Expanded(
             child: StreamBuilder(

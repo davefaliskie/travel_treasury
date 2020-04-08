@@ -4,8 +4,6 @@ import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 import 'package:intl/intl.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'dart:async';
-import 'package:travel_budget/credentials.dart';
-
 import 'budget_view.dart';
 
 class NewTripDateView extends StatefulWidget {
