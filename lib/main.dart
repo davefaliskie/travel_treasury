@@ -5,8 +5,14 @@ import 'package:travel_budget/views/first_view.dart';
 import 'package:travel_budget/views/sign_up_view.dart';
 import 'package:travel_budget/widgets/provider_widget.dart';
 import 'package:travel_budget/services/auth_service.dart';
+import 'package:firebase_admob/firebase_admob.dart';
+import 'package:travel_budget/services/admob_service.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  FirebaseAdMob.instance.initialize(appId: AdMobService().getAdMobAppId());
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
