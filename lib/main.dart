@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:travel_budget/views/navigation_view.dart';
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Provider(
       auth: AuthService(),
+      db: Firestore.instance,
       child: MaterialApp(
         title: "Travel Budget App",
         theme: ThemeData(
