@@ -119,9 +119,9 @@ class _ProfileViewState extends State<ProfileView> {
     } else {
       return RaisedButton(
         child: Text("Sign Out"),
-        onPressed: () async {
+        onPressed: () {
           try {
-            await Provider.of(context).auth.signOut();
+            Provider.of(context).auth.signOut();
           } catch (e) {
             print(e);
           }

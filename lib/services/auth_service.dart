@@ -52,8 +52,8 @@ class AuthService {
   }
 
   // Sign Out
-  signOut() {
-    return _firebaseAuth.signOut();
+  signOut() async {
+    return await _firebaseAuth.signOut();
   }
 
   // Reset Password
