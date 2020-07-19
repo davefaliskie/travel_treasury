@@ -324,6 +324,10 @@ PODS:
   - GTMSessionFetcher/Full (1.3.1):
     - GTMSessionFetcher/Core (= 1.3.1)
   - leveldb-library (1.22)
+  - libphonenumber (0.0.1):
+    - Flutter
+    - libPhoneNumber-iOS
+  - libPhoneNumber-iOS (0.9.15)
   - nanopb (0.3.9011):
     - nanopb/decode (= 0.3.9011)
     - nanopb/encode (= 0.3.9011)
@@ -347,6 +351,7 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
   - google_sign_in_web (from `.symlinks/plugins/google_sign_in_web/ios`)
+  - libphonenumber (from `.symlinks/plugins/libphonenumber/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - path_provider_macos (from `.symlinks/plugins/path_provider_macos/ios`)
 
@@ -375,6 +380,7 @@ SPEC REPOS:
     - GTMAppAuth
     - GTMSessionFetcher
     - leveldb-library
+    - libPhoneNumber-iOS
     - nanopb
 
 EXTERNAL SOURCES:
@@ -402,6 +408,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/google_sign_in/ios"
   google_sign_in_web:
     :path: ".symlinks/plugins/google_sign_in_web/ios"
+  libphonenumber:
+    :path: ".symlinks/plugins/libphonenumber/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
   path_provider_macos:
@@ -443,6 +451,8 @@ SPEC CHECKSUMS:
   GTMAppAuth: 4deac854479704f348309e7b66189e604cf5e01e
   GTMSessionFetcher: cea130bbfe5a7edc8d06d3f0d17288c32ffe9925
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
+  libphonenumber: bd14d5abfc5939ab0b0767234e2d8e2593af258e
+  libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   path_provider: fb74bd0465e96b594bb3b5088ee4a4e7bb1f2a9d
   path_provider_macos: f760a3c5b04357c380e2fddb6f9db6f3015897e0

@@ -2,10 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>GADApplicationIdentifier</key>
-    <string>ca-app-pub-2334510780816542~6726672523</string>
-    <key>io.flutter.embedded_views_preview</key>
-    <true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleExecutable</key>
@@ -32,10 +28,19 @@
 				<string>com.googleusercontent.apps.635382246089-feadgcif5jb704jtq2nir0d6cnh8fu02</string>
 			</array>
 		</dict>
-		<dict/>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.635382246089-egv2iuv19s1e0gjiq7rqvngu4c7e7su0</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-2334510780816542~6726672523</string>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
 	<key>LSRequiresIPhoneOS</key>
@@ -64,5 +69,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>io.flutter.embedded_views_preview</key>
+	<true/>
 </dict>
 </plist>

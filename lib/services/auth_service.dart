@@ -1,14 +1,15 @@
 import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
-  Stream<String> get onAuthStateChanged =>
-      _firebaseAuth.onAuthStateChanged.map(
-            (FirebaseUser user) => user?.uid,
+  Stream<String> get onAuthStateChanged => _firebaseAuth.onAuthStateChanged.map(
+        (FirebaseUser user) => user?.uid,
       );
 
   // GET UID
@@ -22,8 +23,8 @@ class AuthService {
   }
 
   // Email & Password Sign Up
-  Future<String> createUserWithEmailAndPassword(String email, String password,
-      String name) async {
+  Future<String> createUserWithEmailAndPassword(
+      String email, String password, String name) async {
     final authResult = await _firebaseAuth.createUserWithEmailAndPassword(
       email: email,
       password: password,
@@ -42,10 +43,12 @@ class AuthService {
   }
 
   // Email & Password Sign In
-  Future<String> signInWithEmailAndPassword(String email,
-      String password) async {
+  Future<String> signInWithEmailAndPassword(
+      String email, String password) async {
     return (await _firebaseAuth.signInWithEmailAndPassword(
-        email: email, password: password)).user.uid;
+            email: email, password: password))
+        .user
+        .uid;
   }
 
   // Sign Out
@@ -63,10 +66,12 @@ class AuthService {
     return _firebaseAuth.signInAnonymously();
   }
 
-  Future convertUserWithEmail(String email, String password, String name) async {
+  Future convertUserWithEmail(
+      String email, String password, String name) async {
     final currentUser = await _firebaseAuth.currentUser();
 
-    final credential = EmailAuthProvider.getCredential(email: email, password: password);
+    final credential =
+        EmailAuthProvider.getCredential(email: email, password: password);
     await currentUser.linkWithCredential(credential);
     await updateUserName(name, currentUser);
   }
@@ -88,8 +93,8 @@ class AuthService {
     final GoogleSignInAccount account = await _googleSignIn.signIn();
     final GoogleSignInAuthentication _googleAuth = await account.authentication;
     final AuthCredential credential = GoogleAuthProvider.getCredential(
-        idToken: _googleAuth.idToken,
-        accessToken: _googleAuth.accessToken,
+      idToken: _googleAuth.idToken,
+      accessToken: _googleAuth.accessToken,
     );
     return (await _firebaseAuth.signInWithCredential(credential)).user.uid;
   }
@@ -102,22 +107,23 @@ class AuthService {
 
     switch (result.status) {
       case AuthorizationStatus.authorized:
-
         final AppleIdCredential _auth = result.credential;
-        final OAuthProvider oAuthProvider = new OAuthProvider(providerId: "apple.com");
+        final OAuthProvider oAuthProvider =
+            new OAuthProvider(providerId: "apple.com");
 
         final AuthCredential credential = oAuthProvider.getCredential(
-            idToken: String.fromCharCodes(_auth.identityToken),
-            accessToken: String.fromCharCodes(_auth.authorizationCode),
+          idToken: String.fromCharCodes(_auth.identityToken),
+          accessToken: String.fromCharCodes(_auth.authorizationCode),
         );
 
         await _firebaseAuth.signInWithCredential(credential);
 
         // update the user information
         if (_auth.fullName != null) {
-          _firebaseAuth.currentUser().then( (value) async {
+          _firebaseAuth.currentUser().then((value) async {
             UserUpdateInfo user = UserUpdateInfo();
-            user.displayName = "${_auth.fullName.givenName} ${_auth.fullName.familyName}";
+            user.displayName =
+                "${_auth.fullName.givenName} ${_auth.fullName.familyName}";
             await value.updateProfile(user);
           });
         }
@@ -134,6 +140,54 @@ class AuthService {
     }
   }
 
+  Future createUserWithPhone(String phone, BuildContext context) async {
+    _firebaseAuth.verifyPhoneNumber(
+        phoneNumber: phone,
+        timeout: Duration(seconds: 0),
+        verificationCompleted: (AuthCredential authCredential) {
+          _firebaseAuth.signInWithCredential(authCredential).then((AuthResult result){
+            Navigator.of(context).pushReplacementNamed('/home');
+          }).catchError((e) {
+            return "error";
+          });
+        },
+        verificationFailed: (AuthException exception) {
+          return "error";
+        },
+        codeSent: (String verificationId, [int forceResendingToken]) {
+          final _codeController = TextEditingController();
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (context) => AlertDialog(
+              title: Text("Enter Verification Code From Text Message"),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[TextField(controller: _codeController)],
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text("submit"),
+                  textColor: Colors.white,
+                  color: Colors.green,
+                  onPressed: () {
+                    var _credential = PhoneAuthProvider.getCredential(verificationId: verificationId,
+                        smsCode: _codeController.text.trim());
+                    _firebaseAuth.signInWithCredential(_credential).then((AuthResult result){
+                      Navigator.of(context).pushReplacementNamed('/home');
+                    }).catchError((e) {
+                      return "error";
+                    });
+                  },
+                )
+              ],
+            ),
+          );
+        },
+        codeAutoRetrievalTimeout: (String verificationId) {
+          verificationId = verificationId;
+        });
+  }
 }
 
 class NameValidator {

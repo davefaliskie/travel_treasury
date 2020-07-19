@@ -50,6 +50,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.5"
+  built_collection:
+    dependency: transitive
+    description:
+      name: built_collection
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.3.2"
+  built_value:
+    dependency: transitive
+    description:
+      name: built_value
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "7.1.0"
   charcode:
     dependency: transitive
     description:
@@ -176,6 +190,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.1+2"
+  fixnum:
+    dependency: transitive
+    description:
+      name: fixnum
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.10.11"
   flare_dart:
     dependency: transitive
     description:
@@ -268,6 +289,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.4"
+  international_phone_input:
+    dependency: "direct main"
+    description:
+      name: international_phone_input
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.4"
   intl:
     dependency: "direct main"
     description:
@@ -282,6 +310,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.1+1"
+  libphonenumber:
+    dependency: transitive
+    description:
+      name: libphonenumber
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1"
   matcher:
     dependency: transitive
     description:

@@ -40,6 +40,7 @@ dependencies:
   admob_flutter: ^0.3.1
   firebase_admob: ^0.9.3+2
   flare_flutter: ^2.0.3
+  international_phone_input: ^1.0.4
 
 
 dev_dependencies:
