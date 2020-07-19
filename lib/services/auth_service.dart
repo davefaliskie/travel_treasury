@@ -146,6 +146,7 @@ class AuthService {
         timeout: Duration(seconds: 0),
         verificationCompleted: (AuthCredential authCredential) {
           _firebaseAuth.signInWithCredential(authCredential).then((AuthResult result){
+            Navigator.of(context).pop(); // to pop the dialog box
             Navigator.of(context).pushReplacementNamed('/home');
           }).catchError((e) {
             return "error";
@@ -174,6 +175,7 @@ class AuthService {
                     var _credential = PhoneAuthProvider.getCredential(verificationId: verificationId,
                         smsCode: _codeController.text.trim());
                     _firebaseAuth.signInWithCredential(_credential).then((AuthResult result){
+                      Navigator.of(context).pop(); // to pop the dialog box
                       Navigator.of(context).pushReplacementNamed('/home');
                     }).catchError((e) {
                       return "error";

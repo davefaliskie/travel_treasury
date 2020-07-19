@@ -292,11 +292,6 @@ class _SignUpViewState extends State<SignUpView> {
 
     if (authFormType == AuthFormType.phone) {
       textFields.add(
-//        TextFormField(
-//          style: TextStyle(fontSize: 22.0),
-//          decoration: buildSignUpInputDecoration("Enter Phone"),
-//          onSaved: (value) => _phone = value,
-//        ),
         InternationalPhoneInput(
             decoration: buildSignUpInputDecoration("Enter Phone Number"),
             onPhoneNumberChange: onPhoneNumberChange,
