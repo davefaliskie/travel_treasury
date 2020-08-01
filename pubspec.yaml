@@ -41,6 +41,16 @@ dependencies:
   firebase_admob: ^0.9.3+2
   flare_flutter: ^2.0.3
   international_phone_input: ^1.0.4
+  flutter_launcher_icons: "^0.7.3"
+
+# flutter pub run flutter_launcher_icons:main
+flutter_icons:
+  image_path: "assets/icons/main_logo.png"
+  adaptive_icon_foreground: "assets/icons/foreground_logo.png"
+  adaptive_icon_background: "#57AEAF"
+  android: true
+  ios: true
+
 
 
 dev_dependencies:
