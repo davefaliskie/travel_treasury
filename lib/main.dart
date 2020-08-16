@@ -91,7 +91,7 @@ class HomeController extends StatelessWidget {
           final bool signedIn = snapshot.hasData;
           return signedIn ? Home() : FirstView();
         }
-        return CircularProgressIndicator();
+        return Container();
       },
     );
   }
