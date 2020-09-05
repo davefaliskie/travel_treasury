@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:travel_budget/pages.dart';
 import 'package:travel_budget/views/home_view.dart';
 import 'package:travel_budget/views/new_trips/location_view.dart';
+import 'package:travel_budget/views/past_trips_view.dart';
 import 'profile_view.dart';
 import 'package:travel_budget/models/Trip.dart';
 
@@ -16,7 +16,7 @@ class _HomeState extends State<Home> {
   int _currentIndex = 0;
   final List<Widget> _children = [
     HomeView(),
-    ExplorePage(),
+    PastTripsView(),
     ProfileView(),
   ];
 
@@ -48,8 +48,8 @@ class _HomeState extends State<Home> {
               title: new Text("Home"),
             ),
             BottomNavigationBarItem(
-              icon: new Icon(Icons.explore),
-              title: new Text("Explore"),
+              icon: new Icon(Icons.history),
+              title: new Text("Past Trips"),
             ),
             BottomNavigationBarItem(
               icon: new Icon(Icons.account_circle),
