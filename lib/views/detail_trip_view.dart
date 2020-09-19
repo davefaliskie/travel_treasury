@@ -309,22 +309,22 @@ class _DetailTripViewState extends State<DetailTripView> {
 
   Future updateTrip(context) async {
     var uid = await Provider.of(context).auth.getCurrentUID();
-    final doc = Firestore.instance
+    final doc = FirebaseFirestore.instance
         .collection('userData')
-        .document(uid)
+        .doc(uid)
         .collection("trips")
-        .document(widget.trip.documentId);
+        .doc(widget.trip.documentId);
 
-    return await doc.setData(widget.trip.toJson());
+    return await doc.set(widget.trip.toJson());
   }
 
   Future deleteTrip(context) async {
     var uid = await Provider.of(context).auth.getCurrentUID();
-    final doc = Firestore.instance
+    final doc = FirebaseFirestore.instance
         .collection('userData')
-        .document(uid)
+        .doc(uid)
         .collection("trips")
-        .document(widget.trip.documentId);
+        .doc(widget.trip.documentId);
 
     return await doc.delete();
   }

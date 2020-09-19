@@ -63,15 +63,15 @@ class _PastTripsViewState extends State<PastTripsView> {
 
   getUsersPastTripsStreamSnapshots() async {
     final uid = await Provider.of(context).auth.getCurrentUID();
-    var data = await Firestore.instance
+    var data = await FirebaseFirestore.instance
         .collection('userData')
-        .document(uid)
+        .doc(uid)
         .collection('trips')
         .where("endDate", isLessThanOrEqualTo: DateTime.now())
         .orderBy('endDate')
-        .getDocuments();
+        .get();
     setState(() {
-      _allResults = data.documents;
+      _allResults = data.docs;
     });
     searchResultsList();
     return "complete";

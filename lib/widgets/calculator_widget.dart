@@ -84,11 +84,11 @@ class _CalculatorWidgetState extends State<CalculatorWidget> {
                         _needed = _needed - int.parse(_moneyController.text);
                       });
                       final uid = await Provider.of(context).auth.getCurrentUID();
-                      await Firestore.instance.collection('userData')
-                          .document(uid)
+                      await FirebaseFirestore.instance.collection('userData')
+                          .doc(uid)
                           .collection('trips')
-                          .document(widget.trip.documentId)
-                          .updateData({'saved': _saved.toDouble()});
+                          .doc(widget.trip.documentId)
+                          .update({'saved': _saved.toDouble()});
                     },
                   ),
                   IconButton(
@@ -101,11 +101,11 @@ class _CalculatorWidgetState extends State<CalculatorWidget> {
                         _needed = _needed + int.parse(_moneyController.text);
                       });
                       final uid = await Provider.of(context).auth.getCurrentUID();
-                      await Firestore.instance.collection('userData')
-                          .document(uid)
+                      await FirebaseFirestore.instance.collection('userData')
+                          .doc(uid)
                           .collection('trips')
-                          .document(widget.trip.documentId)
-                          .updateData({'saved': _saved.toDouble()});
+                          .doc(widget.trip.documentId)
+                          .update({'saved': _saved.toDouble()});
                     },
                   )
                 ],
@@ -143,11 +143,11 @@ class _CalculatorWidgetState extends State<CalculatorWidget> {
           _needed = _needed - amount;
         });
         final uid = await Provider.of(context).auth.getCurrentUID();
-        await Firestore.instance.collection('userData')
-            .document(uid)
+        await FirebaseFirestore.instance.collection('userData')
+            .doc(uid)
             .collection('trips')
-            .document(widget.trip.documentId)
-            .updateData({'saved': _saved.toDouble()});
+            .doc(widget.trip.documentId)
+            .update({'saved': _saved.toDouble()});
       },
     );
   }

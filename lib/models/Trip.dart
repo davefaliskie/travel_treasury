@@ -39,16 +39,16 @@ class Trip {
 
   // creating a Trip object from a firebase snapshot
   Trip.fromSnapshot(DocumentSnapshot snapshot) :
-      title = snapshot['title'],
-      startDate = snapshot['startDate'].toDate(),
-      endDate = snapshot['endDate'].toDate(),
-      budget = snapshot['budget'],
-      budgetTypes = snapshot['budgetTypes'],
-      travelType = snapshot['travelType'],
-      photoReference = snapshot['photoReference'],
-      notes = snapshot['notes'],
-      documentId = snapshot.documentID,
-      saved = snapshot['saved'];
+      title = snapshot.data()['title'],
+      startDate = snapshot.data()['startDate'].toDate(),
+      endDate = snapshot.data()['endDate'].toDate(),
+      budget = snapshot.data()['budget'],
+      budgetTypes = snapshot.data()['budgetTypes'],
+      travelType = snapshot.data()['travelType'],
+      photoReference = snapshot.data()['photoReference'],
+      notes = snapshot.data()['notes'],
+      documentId = snapshot.id,
+      saved = snapshot.data()['saved'];
 
 
 

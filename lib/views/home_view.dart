@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:travel_budget/widgets/provider_widget.dart';
 import 'package:travel_budget/models/Trip.dart';
 import 'package:travel_budget/widgets/trip_card.dart';
-import 'detail_trip_view.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:travel_budget/widgets/calculator_widget.dart';
-import 'package:admob_flutter/admob_flutter.dart';
+//import 'package:admob_flutter/admob_flutter.dart';
 import 'package:travel_budget/services/admob_service.dart';
 import 'package:travel_budget/views/new_trips/location_view.dart';
 import 'package:flare_flutter/flare_actor.dart';
@@ -32,7 +29,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
-    Admob.initialize(ams.getAdMobAppId());
+//    Admob.initialize(ams.getAdMobAppId());
   }
 
   @override
@@ -59,9 +56,9 @@ class _HomeViewState extends State<HomeView> {
   Stream<QuerySnapshot> getUsersTripsStreamSnapshots(
       BuildContext context) async* {
     final uid = await Provider.of(context).auth.getCurrentUID();
-    yield* Firestore.instance
+    yield* FirebaseFirestore.instance
         .collection('userData')
-        .document(uid)
+        .doc(uid)
         .collection('trips')
         .orderBy('startDate')
         .snapshots();
@@ -69,24 +66,24 @@ class _HomeViewState extends State<HomeView> {
 
   _getNextTrip() async {
     final uid = await Provider.of(context).auth.getCurrentUID();
-    var snapshot = await Firestore.instance
+    var snapshot = await FirebaseFirestore.instance
         .collection('userData')
-        .document(uid)
+        .doc(uid)
         .collection('trips')
         .orderBy('startDate')
         .limit(1)
-        .getDocuments();
-    return Trip.fromSnapshot(snapshot.documents.first);
+        .get();
+    return Trip.fromSnapshot(snapshot.docs.first);
   }
 
   Widget showHomePageWithTrips(Trip trip) {
     return Column(
       children: <Widget>[
         CalculatorWidget(trip: trip),
-        AdmobBanner(
-          adUnitId: ams.getBannerAdId(),
-          adSize: AdmobBannerSize.FULL_BANNER,
-        ),
+//        AdmobBanner(
+//          adUnitId: ams.getBannerAdId(),
+//          adSize: AdmobBannerSize.FULL_BANNER,
+//        ),
         Expanded(
           child: StreamBuilder(
               stream: getUsersTripsStreamSnapshots(context),

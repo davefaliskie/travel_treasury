@@ -8,18 +8,18 @@ class AuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
-  Stream<String> get onAuthStateChanged => _firebaseAuth.onAuthStateChanged.map(
-        (FirebaseUser user) => user?.uid,
+  Stream<String> get onAuthStateChanged => _firebaseAuth.authStateChanges().map(
+        (User user) => user?.uid,
       );
 
   // GET UID
   Future<String> getCurrentUID() async {
-    return (await _firebaseAuth.currentUser()).uid;
+    return (_firebaseAuth.currentUser).uid;
   }
 
   // GET CURRENT USER
   Future getCurrentUser() async {
-    return await _firebaseAuth.currentUser();
+    return _firebaseAuth.currentUser;
   }
 
   // Email & Password Sign Up
@@ -35,10 +35,8 @@ class AuthService {
     return authResult.user.uid;
   }
 
-  Future updateUserName(String name, FirebaseUser currentUser) async {
-    var userUpdateInfo = UserUpdateInfo();
-    userUpdateInfo.displayName = name;
-    await currentUser.updateProfile(userUpdateInfo);
+  Future updateUserName(String name, User currentUser) async {
+    await currentUser.updateProfile(displayName: name);
     await currentUser.reload();
   }
 
@@ -68,19 +66,19 @@ class AuthService {
 
   Future convertUserWithEmail(
       String email, String password, String name) async {
-    final currentUser = await _firebaseAuth.currentUser();
+    final currentUser = _firebaseAuth.currentUser;
 
     final credential =
-        EmailAuthProvider.getCredential(email: email, password: password);
+        EmailAuthProvider.credential(email: email, password: password);
     await currentUser.linkWithCredential(credential);
     await updateUserName(name, currentUser);
   }
 
   Future convertWithGoogle() async {
-    final currentUser = await _firebaseAuth.currentUser();
+    final currentUser = _firebaseAuth.currentUser;
     final GoogleSignInAccount account = await _googleSignIn.signIn();
     final GoogleSignInAuthentication _googleAuth = await account.authentication;
-    final AuthCredential credential = GoogleAuthProvider.getCredential(
+    final AuthCredential credential = GoogleAuthProvider.credential(
       idToken: _googleAuth.idToken,
       accessToken: _googleAuth.accessToken,
     );
@@ -92,7 +90,7 @@ class AuthService {
   Future<String> signInWithGoogle() async {
     final GoogleSignInAccount account = await _googleSignIn.signIn();
     final GoogleSignInAuthentication _googleAuth = await account.authentication;
-    final AuthCredential credential = GoogleAuthProvider.getCredential(
+    final AuthCredential credential = GoogleAuthProvider.credential(
       idToken: _googleAuth.idToken,
       accessToken: _googleAuth.accessToken,
     );
@@ -109,9 +107,9 @@ class AuthService {
       case AuthorizationStatus.authorized:
         final AppleIdCredential _auth = result.credential;
         final OAuthProvider oAuthProvider =
-            new OAuthProvider(providerId: "apple.com");
+            new OAuthProvider("apple.com");
 
-        final AuthCredential credential = oAuthProvider.getCredential(
+        final AuthCredential credential = oAuthProvider.credential(
           idToken: String.fromCharCodes(_auth.identityToken),
           accessToken: String.fromCharCodes(_auth.authorizationCode),
         );
@@ -120,12 +118,7 @@ class AuthService {
 
         // update the user information
         if (_auth.fullName != null) {
-          _firebaseAuth.currentUser().then((value) async {
-            UserUpdateInfo user = UserUpdateInfo();
-            user.displayName =
-                "${_auth.fullName.givenName} ${_auth.fullName.familyName}";
-            await value.updateProfile(user);
-          });
+          await _firebaseAuth.currentUser.updateProfile(displayName: "${_auth.fullName.givenName} ${_auth.fullName.familyName}");
         }
 
         break;
@@ -145,14 +138,14 @@ class AuthService {
         phoneNumber: phone,
         timeout: Duration(seconds: 0),
         verificationCompleted: (AuthCredential authCredential) {
-          _firebaseAuth.signInWithCredential(authCredential).then((AuthResult result){
+          _firebaseAuth.signInWithCredential(authCredential).then((UserCredential result){
             Navigator.of(context).pop(); // to pop the dialog box
             Navigator.of(context).pushReplacementNamed('/home');
           }).catchError((e) {
             return "error";
           });
         },
-        verificationFailed: (AuthException exception) {
+        verificationFailed: (FirebaseAuthException exception) {
           return "error";
         },
         codeSent: (String verificationId, [int forceResendingToken]) {
@@ -172,9 +165,9 @@ class AuthService {
                   textColor: Colors.white,
                   color: Colors.green,
                   onPressed: () {
-                    var _credential = PhoneAuthProvider.getCredential(verificationId: verificationId,
+                    var _credential = PhoneAuthProvider.credential(verificationId: verificationId,
                         smsCode: _codeController.text.trim());
-                    _firebaseAuth.signInWithCredential(_credential).then((AuthResult result){
+                    _firebaseAuth.signInWithCredential(_credential).then((UserCredential result){
                       Navigator.of(context).pop(); // to pop the dialog box
                       Navigator.of(context).pushReplacementNamed('/home');
                     }).catchError((e) {

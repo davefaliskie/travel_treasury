@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:travel_budget/services/custom_colors.dart';
@@ -10,8 +11,9 @@ import 'package:travel_budget/services/auth_service.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:travel_budget/services/admob_service.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   FirebaseAdMob.instance.initialize(appId: AdMobService().getAdMobAppId());
   runApp(MyApp());
 }
@@ -47,7 +49,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return Provider(
       auth: AuthService(),
-      db: Firestore.instance,
+      db: FirebaseFirestore.instance,
       colors: colors,
       child: MaterialApp(
         title: "Travel Budget App",
@@ -56,7 +58,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           primarySwatch: Colors.blue,
 
           textTheme: TextTheme(
-            body1: GoogleFonts.bitter(fontSize: 14.0)
+            bodyText2: GoogleFonts.bitter(fontSize: 14.0)
           )
         ),
         darkTheme: ThemeData(
@@ -64,7 +66,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
             primarySwatch: Colors.blue,
 
             textTheme: TextTheme(
-                body1: GoogleFonts.bitter(fontSize: 14.0)
+                bodyText2: GoogleFonts.bitter(fontSize: 14.0)
             )
         ),
         home: HomeController(),
