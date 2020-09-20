@@ -38,7 +38,6 @@ dependencies:
   uuid: 2.0.1
   device_info: ^0.4.1+4
   google_fonts: ^0.3.2
-#  admob_flutter: ^0.3.1
   firebase_admob: ^0.10.0-dev.1
   flare_flutter: ^2.0.3
   international_phone_input: ^1.0.4
