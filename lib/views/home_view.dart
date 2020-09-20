@@ -1,4 +1,3 @@
-import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:travel_budget/widgets/provider_widget.dart';
@@ -6,6 +5,7 @@ import 'package:travel_budget/models/Trip.dart';
 import 'package:travel_budget/widgets/trip_card.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:travel_budget/widgets/calculator_widget.dart';
+//import 'package:admob_flutter/admob_flutter.dart';
 import 'package:travel_budget/services/admob_service.dart';
 import 'package:travel_budget/views/new_trips/location_view.dart';
 import 'package:flare_flutter/flare_actor.dart';
@@ -18,7 +18,6 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   Future _nextTrip;
-  BannerAd bannerAd;
   final ams = AdMobService();
 
   @override
@@ -29,15 +28,8 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   void initState() {
-    bannerAd = ams.getHomePageBannerAd();
-    bannerAd.load();
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    bannerAd.dispose();
-    super.dispose();
+//    Admob.initialize(ams.getAdMobAppId());
   }
 
   @override
@@ -51,7 +43,6 @@ class _HomeViewState extends State<HomeView> {
               // Display Welcome
               return showNewTripPage();
             } else {
-              bannerAd.show(anchorType: AnchorType.bottom, anchorOffset: kBottomNavigationBarHeight);
               return showHomePageWithTrips(snapshot.data);
             }
           } else {
@@ -89,6 +80,10 @@ class _HomeViewState extends State<HomeView> {
     return Column(
       children: <Widget>[
         CalculatorWidget(trip: trip),
+//        AdmobBanner(
+//          adUnitId: ams.getBannerAdId(),
+//          adSize: AdmobBannerSize.FULL_BANNER,
+//        ),
         Expanded(
           child: StreamBuilder(
               stream: getUsersTripsStreamSnapshots(context),

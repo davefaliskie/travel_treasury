@@ -44,10 +44,5 @@ class AdMobService {
     );
   }
 
-  BannerAd getHomePageBannerAd() {
-    return BannerAd(
-      adUnitId: getBannerAdId(),
-      size: AdSize.smartBanner,
-    );
-  }
+
 }
