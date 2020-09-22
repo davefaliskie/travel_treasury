@@ -5,7 +5,6 @@ import 'package:travel_budget/models/Trip.dart';
 import 'package:travel_budget/widgets/trip_card.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:travel_budget/widgets/calculator_widget.dart';
-//import 'package:admob_flutter/admob_flutter.dart';
 import 'package:travel_budget/services/admob_service.dart';
 import 'package:travel_budget/views/new_trips/location_view.dart';
 import 'package:flare_flutter/flare_actor.dart';
@@ -28,8 +27,8 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   void initState() {
+    AdMobService.showHomeBannerAd();
     super.initState();
-//    Admob.initialize(ams.getAdMobAppId());
   }
 
   @override
@@ -80,10 +79,6 @@ class _HomeViewState extends State<HomeView> {
     return Column(
       children: <Widget>[
         CalculatorWidget(trip: trip),
-//        AdmobBanner(
-//          adUnitId: ams.getBannerAdId(),
-//          adSize: AdmobBannerSize.FULL_BANNER,
-//        ),
         Expanded(
           child: StreamBuilder(
               stream: getUsersTripsStreamSnapshots(context),
@@ -92,7 +87,7 @@ class _HomeViewState extends State<HomeView> {
                 return new ListView.builder(
                     itemCount: snapshot.data.documents.length,
                     itemBuilder: (BuildContext context, int index) =>
-                        buildTripCard(context, snapshot.data.documents[index]));
+                        buildTripCard(context, snapshot.data.documents[index], true));
               }),
         ),
       ],

@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:travel_budget/models/Trip.dart';
+import 'package:travel_budget/services/admob_service.dart';
 import 'package:travel_budget/views/detail_trip_view.dart';
 
-Widget buildTripCard(BuildContext context, DocumentSnapshot document) {
+Widget buildTripCard(BuildContext context, DocumentSnapshot document, [bool loadBannerAd]) {
   final trip = Trip.fromSnapshot(document);
   final tripType = trip.types();
 
@@ -53,11 +54,13 @@ Widget buildTripCard(BuildContext context, DocumentSnapshot document) {
           ),
         ),
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => DetailTripView(trip: trip)),
-          );
+          if (loadBannerAd == true) {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => DetailTripView(trip: trip))).then((value){
+              AdMobService.showHomeBannerAd();
+            });
+          } else {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => DetailTripView(trip: trip)));
+          }
         },
       ),
     ),

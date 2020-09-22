@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:travel_budget/models/Trip.dart';
+import 'package:travel_budget/services/admob_service.dart';
 import 'package:travel_budget/widgets/provider_widget.dart';
 import 'edit_notes_view.dart';
 import 'package:intl/intl.dart';
@@ -23,6 +24,7 @@ class _DetailTripViewState extends State<DetailTripView> {
 
   void initState() {
     super.initState();
+    AdMobService.hideHomeBannerAd();
     _budgetController.text = widget.trip.budget.toStringAsFixed(0);
     _budget = widget.trip.budget.floor();
   }
