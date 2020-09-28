@@ -27,7 +27,7 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   void initState() {
-    AdMobService.showHomeBannerAd();
+//    AdMobService.showHomeBannerAd();
     super.initState();
   }
 
