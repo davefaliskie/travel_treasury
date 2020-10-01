@@ -9,7 +9,6 @@ import 'package:travel_budget/services/admob_service.dart';
 import 'package:travel_budget/views/new_trips/location_view.dart';
 import 'package:flare_flutter/flare_actor.dart';
 
-
 class HomeView extends StatefulWidget {
   @override
   _HomeViewState createState() => _HomeViewState();
@@ -78,17 +77,24 @@ class _HomeViewState extends State<HomeView> {
   Widget showHomePageWithTrips(Trip trip) {
     return Column(
       children: <Widget>[
-        CalculatorWidget(trip: trip),
         Expanded(
           child: StreamBuilder(
-              stream: getUsersTripsStreamSnapshots(context),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) return const Text("Loading...");
-                return new ListView.builder(
-                    itemCount: snapshot.data.documents.length,
-                    itemBuilder: (BuildContext context, int index) =>
-                        buildTripCard(context, snapshot.data.documents[index], true));
-              }),
+            stream: getUsersTripsStreamSnapshots(context),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) return const Text("Loading...");
+              return new ListView.builder(
+                itemCount: snapshot.data.documents.length + 1,
+                itemBuilder: (BuildContext context, int index) {
+                  if (index == 0) {
+                    return CalculatorWidget(trip: trip);
+                  } else {
+                    return buildTripCard(
+                        context, snapshot.data.documents[index - 1], true);
+                  }
+                },
+              );
+            },
+          ),
         ),
       ],
     );
@@ -102,7 +108,8 @@ class _HomeViewState extends State<HomeView> {
           color: Color(0xff92D2F2),
           height: MediaQuery.of(context).size.height * .3,
           width: MediaQuery.of(context).size.width,
-          child: FlareActor("assets/sun_clouds.flr",
+          child: FlareActor(
+            "assets/sun_clouds.flr",
             alignment: Alignment.center,
             fit: BoxFit.fitWidth,
             animation: "do_animation",
@@ -150,16 +157,3 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
