@@ -20,7 +20,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  firebase_core: ^0.5.0
+  firebase_core: ^0.5.3
   cloud_firestore: ^0.14.0
   firebase_auth: ^0.18.0
   google_sign_in: ^4.0.4
@@ -42,6 +42,8 @@ dependencies:
   flare_flutter: ^2.0.3
   international_phone_input: ^1.0.4
   flutter_launcher_icons: "^0.7.3"
+  firebase_crashlytics: "^0.2.4"
+
 
 # flutter pub run flutter_launcher_icons:main
 flutter_icons:
