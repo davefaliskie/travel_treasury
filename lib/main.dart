@@ -61,7 +61,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           primarySwatch: Colors.blue,
 
           textTheme: TextTheme(
-            bodyText2: GoogleFonts.bitter(fontSize: 14.0)
+            bodyText2: GoogleFonts.quicksand(fontSize: 14.0)
           )
         ),
         darkTheme: ThemeData(
