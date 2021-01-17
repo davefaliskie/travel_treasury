@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:travel_budget/models/Trip.dart';
+import 'package:travel_budget/services/firebase_service.dart';
 import 'package:travel_budget/views/navigation_view.dart';
 import 'package:travel_budget/widgets/provider_widget.dart';
 import 'package:travel_budget/widgets/rounded_button.dart';
@@ -118,13 +119,7 @@ class _DepositViewState extends State<DepositView> {
           child:
               Text("${type[0].toUpperCase()}${type.substring(1)}", style: TextStyle(color: Colors.white, fontSize: 20)),
           onPressed: () async {
-            await Provider.of(context).db
-                  .collection('userData')
-                  .doc(Provider.of(context).auth.getCurrentUID())
-                  .collection('trips')
-                  .doc(widget.trip.documentId)
-                  .update(widget.trip.ledgerItem(_amount, type)
-            );
+            FirebaseService.addToLedger(context, widget.trip.documentId, widget.trip.ledgerItem(_amount, type));
             Navigator.pushReplacement(
               context,
               PageRouteBuilder(

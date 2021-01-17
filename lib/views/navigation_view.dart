@@ -1,8 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:travel_budget/services/firebase_service.dart';
 import 'package:travel_budget/views/home_view.dart';
-import 'package:travel_budget/views/new_trips/location_view.dart';
-import 'package:travel_budget/widgets/provider_widget.dart';
 import 'deposit_view.dart';
 import 'profile_view.dart';
 import 'package:travel_budget/models/Trip.dart';
@@ -22,7 +20,7 @@ class _NavigationViewState extends State<NavigationView> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _nextTrip = _getNextTrip();
+    _nextTrip = FirebaseService.getNextTrip(context);
   }
 
   @override
@@ -96,22 +94,10 @@ class _NavigationViewState extends State<NavigationView> {
     );
   }
 
-
   void onTabTapped(int index) {
     setState(() {
       _currentIndex = index;
     });
   }
 
-  _getNextTrip() async {
-    final uid = await Provider.of(context).auth.getCurrentUID();
-    var snapshot = await FirebaseFirestore.instance
-        .collection('userData')
-        .doc(uid)
-        .collection('trips')
-        .orderBy('startDate')
-        .limit(1)
-        .get();
-    return Trip.fromSnapshot(snapshot.docs.first);
-  }
 }
