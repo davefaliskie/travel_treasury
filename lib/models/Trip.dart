@@ -14,7 +14,7 @@ class Trip {
   String notes;
   String documentId;
   double saved;
-
+  List ledger;
 
 
   Trip(
@@ -48,7 +48,8 @@ class Trip {
       photoReference = snapshot.data()['photoReference'],
       notes = snapshot.data()['notes'],
       documentId = snapshot.id,
-      saved = snapshot.data()['saved'];
+      saved = snapshot.data()['saved'],
+      ledger = snapshot.data()['ledger'];
 
 
 
@@ -79,6 +80,22 @@ class Trip {
       diff = 0;
     }
     return diff;
+  }
+
+  Map<String, dynamic> ledgerItem(String amount, String type) {
+    var amountDouble = double.parse(amount);
+    if (type == "spent") {
+      amountDouble = double.parse("-" + amount);
+    }
+    return {
+      'ledger': FieldValue.arrayUnion([
+        {
+          "date": DateTime.now(),
+          "amount": amountDouble,
+        },
+      ]),
+      'saved': FieldValue.increment(amountDouble)
+    };
   }
 }
 

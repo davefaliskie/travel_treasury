@@ -13,8 +13,8 @@ class AuthService {
       );
 
   // GET UID
-  Future<String> getCurrentUID() async {
-    return (_firebaseAuth.currentUser).uid;
+  String getCurrentUID() {
+    return _firebaseAuth.currentUser.uid;
   }
 
   // GET CURRENT USER

@@ -55,6 +55,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       db: FirebaseFirestore.instance,
       colors: colors,
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: "Travel Budget App",
         theme: ThemeData(
           brightness: Brightness.light,
@@ -94,7 +95,7 @@ class HomeController extends StatelessWidget {
       builder: (context, AsyncSnapshot<String> snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
           final bool signedIn = snapshot.hasData;
-          return signedIn ? Home() : FirstView();
+          return signedIn ? NavigationView() : FirstView();
         }
         return Container();
       },

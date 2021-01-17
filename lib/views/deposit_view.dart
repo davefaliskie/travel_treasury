@@ -1,12 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:travel_budget/models/Trip.dart';
+import 'package:travel_budget/views/navigation_view.dart';
+import 'package:travel_budget/widgets/provider_widget.dart';
 import 'package:travel_budget/widgets/rounded_button.dart';
 
 class DepositView extends StatefulWidget {
+  final Trip trip;
+
+  DepositView({
+    @required this.trip,
+  });
+
   @override
   _DepositViewState createState() => _DepositViewState();
 }
 
 class _DepositViewState extends State<DepositView> {
+  String _amount = "0";
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -20,7 +32,7 @@ class _DepositViewState extends State<DepositView> {
             FittedBox(
               fit: BoxFit.fitWidth,
               child: Text(
-                "\$100",
+                "\$$_amount",
                 style: TextStyle(fontSize: 100, fontWeight: FontWeight.bold, color: Colors.white),
               ),
             ),
@@ -57,19 +69,43 @@ class _DepositViewState extends State<DepositView> {
       ),
     );
   }
-  
-  
+
   Widget _numberBtn(String number) {
     return FlatButton(
-      child: Text("$number", style: TextStyle(fontSize: 40, color: Colors.white),),
-      onPressed: () { print("$number"); },
+      child: Text(
+        "$number",
+        style: TextStyle(fontSize: 40, color: Colors.white),
+      ),
+      onPressed: () {
+        setState(() {
+          if (_amount == "0") {
+            _amount = "$number";
+          } else if (_amount.length == 5) {
+            _amount = _amount;
+            HapticFeedback.heavyImpact();
+          } else {
+            _amount += "$number";
+          }
+        });
+      },
     );
   }
 
   Widget _deleteBtn() {
     return FlatButton(
-      child: Text("<", style: TextStyle(fontSize: 40, color: Colors.white),),
-      onPressed: () { print("delete"); },
+      child: Text(
+        "<",
+        style: TextStyle(fontSize: 40, color: Colors.white),
+      ),
+      onPressed: () {
+        setState(() {
+          if (_amount.length <= 1) {
+            _amount = "0";
+          } else {
+            _amount = _amount.substring(0, _amount.length - 1);
+          }
+        });
+      },
     );
   }
 
@@ -79,19 +115,32 @@ class _DepositViewState extends State<DepositView> {
         padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
         child: RoundedButton(
           color: Colors.indigoAccent,
-          child: Text("${type[0].toUpperCase()}${type.substring(1)}", style: TextStyle(color: Colors.white, fontSize: 20)),
-          onPressed: () {
-            print("$type");
+          child:
+              Text("${type[0].toUpperCase()}${type.substring(1)}", style: TextStyle(color: Colors.white, fontSize: 20)),
+          onPressed: () async {
+            await Provider.of(context).db
+                  .collection('userData')
+                  .doc(Provider.of(context).auth.getCurrentUID())
+                  .collection('trips')
+                  .doc(widget.trip.documentId)
+                  .update(widget.trip.ledgerItem(_amount, type)
+            );
+            Navigator.pushReplacement(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (_, __, ___) => NavigationView(),
+                transitionDuration: Duration(seconds: 0),
+              ),
+            );
           },
         ),
       ),
     );
   }
 
-  
   setKeyboard() {
     List<Widget> keyboard = [];
-    
+
     // numbers 1-9
     List.generate(9, (index) {
       keyboard.add(_numberBtn("${index + 1}"));

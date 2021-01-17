@@ -1,28 +1,68 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:travel_budget/views/home_view.dart';
 import 'package:travel_budget/views/new_trips/location_view.dart';
+import 'package:travel_budget/widgets/provider_widget.dart';
 import 'deposit_view.dart';
 import 'profile_view.dart';
 import 'package:travel_budget/models/Trip.dart';
 
-class Home extends StatefulWidget {
+class NavigationView extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _HomeState();
+    return _NavigationViewState();
   }
 }
 
-class _HomeState extends State<Home> {
+class _NavigationViewState extends State<NavigationView> {
+  Future _nextTrip;
+  Trip _trip;
   int _currentIndex = 0;
-  final List<Widget> _children = [
-    HomeView(),
-    DepositView(),
-    ProfileView(),
-  ];
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _nextTrip = _getNextTrip();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final newTrip = new Trip(null, null, null, null, null, null);
+
+    return FutureBuilder(
+      future: _nextTrip,
+      builder: (context, snapshot) {
+        if(snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasData) {
+            _trip = snapshot.data;
+            return _buildView();
+          } else {
+            // TODO no trips found send to new trip page.
+            return Container(
+              color: Colors.white,
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+        } else {
+          return Container(
+            color: Colors.white,
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+      },
+    );
+  }
+
+  Widget _buildView() {
+    final List<Widget> _children = [
+      HomeView(),
+      DepositView(trip: _trip),
+      ProfileView(),
+    ];
+
     return Scaffold(
       body: _children[_currentIndex],
       floatingActionButton: FloatingActionButton(
@@ -56,9 +96,22 @@ class _HomeState extends State<Home> {
     );
   }
 
+
   void onTabTapped(int index) {
     setState(() {
       _currentIndex = index;
     });
+  }
+
+  _getNextTrip() async {
+    final uid = await Provider.of(context).auth.getCurrentUID();
+    var snapshot = await FirebaseFirestore.instance
+        .collection('userData')
+        .doc(uid)
+        .collection('trips')
+        .orderBy('startDate')
+        .limit(1)
+        .get();
+    return Trip.fromSnapshot(snapshot.docs.first);
   }
 }
