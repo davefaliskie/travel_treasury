@@ -53,7 +53,7 @@ class _HomeViewState extends State<HomeView> {
 
   Stream<QuerySnapshot> getUsersTripsStreamSnapshots(
       BuildContext context) async* {
-    final uid = await Provider.of(context).auth.getCurrentUID();
+    final uid = Provider.of(context).auth.getCurrentUID();
     yield* FirebaseFirestore.instance
         .collection('userData')
         .doc(uid)
@@ -63,7 +63,7 @@ class _HomeViewState extends State<HomeView> {
   }
 
   _getNextTrip() async {
-    final uid = await Provider.of(context).auth.getCurrentUID();
+    final uid = Provider.of(context).auth.getCurrentUID();
     var snapshot = await FirebaseFirestore.instance
         .collection('userData')
         .doc(uid)

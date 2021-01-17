@@ -123,8 +123,7 @@ class _DepositViewState extends State<DepositView> {
                   .doc(Provider.of(context).auth.getCurrentUID())
                   .collection('trips')
                   .doc(widget.trip.documentId)
-                  .update(widget.trip.ledgerItem(_amount, type)
-            );
+                  .update(widget.trip.ledgerItem(_amount, type));
             Navigator.pushReplacement(
               context,
               PageRouteBuilder(
