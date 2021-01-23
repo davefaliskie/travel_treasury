@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:travel_budget/models/Trip.dart';
 import 'package:travel_budget/views/home_widgets/home_header.dart';
+import 'package:travel_budget/views/home_widgets/saved_vs_needed.dart';
 import 'package:travel_budget/views/home_widgets/trip_details_card.dart';
 
 import 'home_widgets/current_daily_budget.dart';
@@ -40,6 +41,12 @@ class _HomeViewState extends State<HomeView> {
               ),
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: savedVsNeeded(context, widget.trip),
+          ),
+
+          Container(height: 40)
         ],
       ),
     );
