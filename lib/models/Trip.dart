@@ -71,7 +71,11 @@ class Trip {
   }
 
   int getTotalTripDays() {
-    return endDate.difference(startDate).inDays;
+    int total = endDate.difference(startDate).inDays;
+    if (total < 1) {
+      total = 1;
+    }
+    return total;
   }
 
   int getDaysUntilTrip() {
@@ -80,6 +84,14 @@ class Trip {
       diff = 0;
     }
     return diff;
+  }
+
+  int getCurrentDailyBudget() {
+    if (saved == 0 || saved == null) {
+      return 0;
+    } else {
+      return (saved / getTotalTripDays()).floor();
+    }
   }
 
   Map<String, dynamic> ledgerItem(String amount, String type) {
