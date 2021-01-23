@@ -19,6 +19,7 @@ class DepositView extends StatefulWidget {
 
 class _DepositViewState extends State<DepositView> {
   String _amount = "0";
+  String _error;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +40,7 @@ class _DepositViewState extends State<DepositView> {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 15.0),
-              child: Text("", style: TextStyle(color: Colors.white)),
+              child: Text("${_error ?? ''}", style: TextStyle(color: Colors.white)),
             ),
             Container(
               child: Padding(
@@ -119,14 +120,24 @@ class _DepositViewState extends State<DepositView> {
           child:
               Text("${type[0].toUpperCase()}${type.substring(1)}", style: TextStyle(color: Colors.white, fontSize: 20)),
           onPressed: () async {
-            FirebaseService.addToLedger(context, widget.trip.documentId, widget.trip.ledgerItem(_amount, type));
-            Navigator.pushReplacement(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (_, __, ___) => NavigationView(),
-                transitionDuration: Duration(seconds: 0),
-              ),
-            );
+            if (_amount == "0") {
+              setState(() {
+                _error = "Enter an amount";
+              });
+            } else if (type == "spent" && double.parse(_amount) > widget.trip.saved) {
+              setState(() {
+                _error = "Yove've only saved \$${widget.trip.saved.floor()}";
+              });
+            } else {
+              FirebaseService.addToLedger(context, widget.trip.documentId, widget.trip.ledgerItem(_amount, type));
+              Navigator.pushReplacement(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (_, __, ___) => NavigationView(),
+                  transitionDuration: Duration(seconds: 0),
+                ),
+              );
+            }
           },
         ),
       ),
