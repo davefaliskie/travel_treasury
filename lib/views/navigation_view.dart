@@ -55,7 +55,7 @@ class _NavigationViewState extends State<NavigationView> {
 
   _buildView() {
     final List<Widget> _children = [
-      HomeView(),
+      HomeView(trip: _trip),
       DepositView(trip: _trip),
       ProfileView(),
     ];
