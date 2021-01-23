@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:travel_budget/models/Trip.dart';
 import 'package:travel_budget/views/home_widgets/home_header.dart';
+import 'package:travel_budget/views/home_widgets/trip_details_card.dart';
 
 
 class HomeView extends StatefulWidget {
@@ -22,6 +23,7 @@ class _HomeViewState extends State<HomeView> {
       child: Column(
         children: [
           homeHeader(context, widget.trip),
+          tripDetailsCard(context, widget.trip),
         ],
       ),
     );
