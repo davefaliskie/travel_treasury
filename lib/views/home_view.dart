@@ -32,10 +32,10 @@ class _HomeViewState extends State<HomeView> {
               child: Row(
                 children: [
                   Expanded(
-                    child: daysUntilTrip(context, widget.trip),
+                    child: DaysUntilTrip(widget.trip),
                   ),
                   Expanded(
-                    child: currentDailyBudget(context, widget.trip),
+                    child: CurrentDailyBudget(widget.trip),
                   )
                 ],
               ),
@@ -43,7 +43,7 @@ class _HomeViewState extends State<HomeView> {
           ),
           Padding(
             padding: const EdgeInsets.all(15.0),
-            child: savedVsNeeded(context, widget.trip),
+            child: SavedVsNeeded(widget.trip),
           ),
 
           Container(height: 40)
