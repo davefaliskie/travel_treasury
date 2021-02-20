@@ -22,11 +22,10 @@ class _HomeViewState extends State<HomeView> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          homeHeader(context, widget.trip),
-          tripDetailsCard(context, widget.trip),
+         HomeHeader(widget.trip),
+         TripDetailsCard(widget.trip),
         ],
       ),
     );
   }
-
 }
