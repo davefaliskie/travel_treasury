@@ -12,7 +12,6 @@ import 'package:firebase_admob/firebase_admob.dart';
 import 'package:travel_budget/services/admob_service.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -26,9 +25,9 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
-
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   var colors = CustomColors(WidgetsBinding.instance.window.platformBrightness);
+
   @override
   void initState() {
     super.initState();
@@ -58,21 +57,13 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         debugShowCheckedModeBanner: false,
         title: "Travel Budget App",
         theme: ThemeData(
-          brightness: Brightness.light,
-          primarySwatch: Colors.blue,
-
-          textTheme: TextTheme(
-            bodyText2: GoogleFonts.quicksand(fontSize: 14.0)
-          )
-        ),
-        darkTheme: ThemeData(
-          brightness: Brightness.dark,
+            brightness: Brightness.light,
             primarySwatch: Colors.blue,
-
-            textTheme: TextTheme(
-                bodyText2: GoogleFonts.bitter(fontSize: 14.0)
-            )
-        ),
+            textTheme: TextTheme(bodyText2: GoogleFonts.quicksand(fontSize: 14.0))),
+        darkTheme: ThemeData(
+            brightness: Brightness.dark,
+            primarySwatch: Colors.blue,
+            textTheme: TextTheme(bodyText2: GoogleFonts.bitter(fontSize: 14.0))),
         home: HomeController(),
         routes: <String, WidgetBuilder>{
           '/home': (BuildContext context) => HomeController(),
@@ -102,4 +93,3 @@ class HomeController extends StatelessWidget {
     );
   }
 }
-

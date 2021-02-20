@@ -44,9 +44,7 @@ Widget buildTripCard(BuildContext context, DocumentSnapshot document, [bool load
                       style: new TextStyle(fontSize: 35.0),
                     ),
                     Spacer(),
-                    (tripType.containsKey(trip.travelType))
-                        ? tripType[trip.travelType]
-                        : tripType["other"],
+                    (tripType.containsKey(trip.travelType)) ? tripType[trip.travelType] : tripType["other"],
                   ],
                 ),
               )
@@ -55,7 +53,7 @@ Widget buildTripCard(BuildContext context, DocumentSnapshot document, [bool load
         ),
         onTap: () {
           if (loadBannerAd == true) {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => DetailTripView(trip: trip))).then((value){
+            Navigator.push(context, MaterialPageRoute(builder: (context) => DetailTripView(trip: trip))).then((value) {
               AdMobService.showHomeBannerAd();
             });
           } else {

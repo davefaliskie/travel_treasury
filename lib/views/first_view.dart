@@ -38,11 +38,9 @@ class FirstView extends StatelessWidget {
                 SizedBox(height: _height * 0.15),
                 RaisedButton(
                   color: Colors.white,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
                   child: Padding(
-                    padding: const EdgeInsets.only(
-                        top: 10.0, bottom: 10.0, left: 30.0, right: 30.0),
+                    padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 30.0, right: 30.0),
                     child: Text(
                       "Get Started",
                       style: TextStyle(
