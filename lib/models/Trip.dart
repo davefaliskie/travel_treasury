@@ -53,13 +53,13 @@ class Trip {
 
 
 
-  Map<String, Icon> types() => {
-    "car": Icon(Icons.directions_car, size: 50),
-    "bus": Icon(Icons.directions_bus, size: 50),
-    "train": Icon(Icons.train, size: 50),
-    "plane": Icon(Icons.airplanemode_active, size: 50),
-    "ship": Icon(Icons.directions_boat, size: 50),
-    "other": Icon(Icons.directions, size: 50),
+  Map<String, Icon> types({color = Colors.black}) => {
+    "car": Icon(Icons.directions_car, size: 50, color: color),
+    "bus": Icon(Icons.directions_bus, size: 50, color: color),
+    "train": Icon(Icons.train, size: 50, color: color),
+    "plane": Icon(Icons.airplanemode_active, size: 50, color: color),
+    "ship": Icon(Icons.directions_boat, size: 50, color: color),
+    "other": Icon(Icons.directions, size: 50, color: color),
   };
 
   // return the google places image
