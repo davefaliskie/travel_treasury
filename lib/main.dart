@@ -8,14 +8,11 @@ import 'package:travel_budget/views/first_view.dart';
 import 'package:travel_budget/views/sign_up_view.dart';
 import 'package:travel_budget/widgets/provider_widget.dart';
 import 'package:travel_budget/services/auth_service.dart';
-import 'package:firebase_admob/firebase_admob.dart';
-import 'package:travel_budget/services/admob_service.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  FirebaseAdMob.instance.initialize(appId: AdMobService().getAdMobAppId());
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   runApp(MyApp());
 }

@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:travel_budget/models/Trip.dart';
-import 'package:travel_budget/services/admob_service.dart';
 import 'package:travel_budget/widgets/provider_widget.dart';
 import 'edit_notes_view.dart';
 import 'package:intl/intl.dart';
@@ -24,7 +23,6 @@ class _DetailTripViewState extends State<DetailTripView> {
 
   void initState() {
     super.initState();
-    AdMobService.hideHomeBannerAd();
     _budgetController.text = widget.trip.budget.toStringAsFixed(0);
     _budget = widget.trip.budget.floor();
   }
@@ -272,10 +270,9 @@ class _DetailTripViewState extends State<DetailTripView> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    RaisedButton(
-                      child: Text('Submit'),
-                      color: Colors.deepPurple,
-                      textColor: Colors.white,
+                    ElevatedButton(
+                      child: Text('Submit', style: TextStyle(color: Colors.white),),
+                      style: ElevatedButton.styleFrom( primary: Colors.deepPurple),
                       onPressed: () async {
                         widget.trip.budget = double.parse(_budgetController.text);
                         setState(() {
@@ -290,10 +287,9 @@ class _DetailTripViewState extends State<DetailTripView> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    RaisedButton(
-                      child: Text('Delete'),
-                      color: Colors.red,
-                      textColor: Colors.white,
+                    ElevatedButton(
+                      child: Text('Delete', style: TextStyle(color: Colors.white),),
+                      style: ElevatedButton.styleFrom( primary: Colors.red),
                       onPressed: () async {
                         await deleteTrip(context);
                         Navigator.of(context).pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
@@ -310,7 +306,7 @@ class _DetailTripViewState extends State<DetailTripView> {
   }
 
   Future updateTrip(context) async {
-    var uid = await Provider.of(context).auth.getCurrentUID();
+    var uid = Provider.of(context).auth.getCurrentUID();
     final doc = FirebaseFirestore.instance
         .collection('userData')
         .doc(uid)
@@ -321,7 +317,7 @@ class _DetailTripViewState extends State<DetailTripView> {
   }
 
   Future deleteTrip(context) async {
-    var uid = await Provider.of(context).auth.getCurrentUID();
+    var uid = Provider.of(context).auth.getCurrentUID();
     final doc = FirebaseFirestore.instance
         .collection('userData')
         .doc(uid)

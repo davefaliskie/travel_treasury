@@ -63,7 +63,7 @@ class _EditNotesViewState extends State<EditNotesView> {
                 style: TextStyle(fontSize: 24, color: Colors.black),
               ),
             ),
-            FlatButton(
+            TextButton(
               child: Icon(Icons.close, color: Colors.black, size: 30),
               onPressed: () {
                 Navigator.of(context).pop();

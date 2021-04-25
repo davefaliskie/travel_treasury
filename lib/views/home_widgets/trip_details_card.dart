@@ -11,8 +11,7 @@ class TripDetailsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Stack(
-        overflow: Overflow.visible,
-        alignment: Alignment.bottomCenter,
+        clipBehavior: Clip.none, alignment: Alignment.bottomCenter,
         children: [
           Container(
             child: Column(

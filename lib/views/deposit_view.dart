@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:travel_budget/models/Trip.dart';
 import 'package:travel_budget/services/firebase_service.dart';
 import 'package:travel_budget/views/navigation_view.dart';
-import 'package:travel_budget/widgets/provider_widget.dart';
 import 'package:travel_budget/widgets/rounded_button.dart';
 
 class DepositView extends StatefulWidget {
@@ -73,7 +72,7 @@ class _DepositViewState extends State<DepositView> {
   }
 
   Widget _numberBtn(String number) {
-    return FlatButton(
+    return TextButton(
       child: Text(
         "$number",
         style: TextStyle(fontSize: 40, color: Colors.white),
@@ -94,7 +93,7 @@ class _DepositViewState extends State<DepositView> {
   }
 
   Widget _deleteBtn() {
-    return FlatButton(
+    return TextButton(
       child: Text(
         "<",
         style: TextStyle(fontSize: 40, color: Colors.white),

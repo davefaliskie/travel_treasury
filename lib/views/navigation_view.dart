@@ -78,15 +78,15 @@ class _NavigationViewState extends State<NavigationView> {
           items: [
             BottomNavigationBarItem(
               icon: new Icon(Icons.home),
-              title: new Text("Home"),
+              label: "Home",
             ),
             BottomNavigationBarItem(
               icon: new Icon(Icons.attach_money),
-              title: new Text("Save"),
+              label: "Save",
             ),
             BottomNavigationBarItem(
               icon: new Icon(Icons.account_circle),
-              title: new Text("Profile"),
+              label: "Profile",
             ),
           ]
       ),

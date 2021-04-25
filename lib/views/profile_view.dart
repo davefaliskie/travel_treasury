@@ -90,7 +90,7 @@ class _ProfileViewState extends State<ProfileView> {
           }
         ),
         showSignOut(context, authData.isAnonymous),
-        RaisedButton(
+        ElevatedButton(
           child: Text("Edit User"),
           onPressed: () {
             _userEditBottomSheet(context);
@@ -101,7 +101,7 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   _getProfileData() async {
-    final uid = await Provider.of(context).auth.getCurrentUID();
+    final uid = Provider.of(context).auth.getCurrentUID();
     await Provider.of(context)
         .db
         .collection('userData')
@@ -114,14 +114,14 @@ class _ProfileViewState extends State<ProfileView> {
 
   Widget showSignOut(context, bool isAnonymous) {
     if (isAnonymous == true) {
-      return RaisedButton(
+      return ElevatedButton(
         child: Text("Sign In To Save Your Data"),
         onPressed: () {
           Navigator.of(context).pushNamed('/convertUser');
         },
       );
     } else {
-      return RaisedButton(
+      return ElevatedButton(
         child: Text("Sign Out"),
         onPressed: () {
           try {
@@ -184,17 +184,16 @@ class _ProfileViewState extends State<ProfileView> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    RaisedButton(
-                      child: Text('Save'),
-                      color: Colors.green,
-                      textColor: Colors.white,
+                    ElevatedButton(
+                      child: Text('Save', style: TextStyle(color: Colors.white)),
+                      style: ElevatedButton.styleFrom(primary: Colors.green),
                       onPressed: () async {
                         user.homeCountry = _userCountryController.text;
                         setState(() {
                           _userCountryController.text = user.homeCountry;
                         });
                         final uid =
-                            await Provider.of(context).auth.getCurrentUID();
+                            Provider.of(context).auth.getCurrentUID();
                         await Provider.of(context)
                             .db
                             .collection('userData')

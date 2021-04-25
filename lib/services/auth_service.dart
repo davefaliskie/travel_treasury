@@ -168,10 +168,9 @@ class AuthService {
                 children: <Widget>[TextField(controller: _codeController)],
               ),
               actions: <Widget>[
-                FlatButton(
-                  child: Text("submit"),
-                  textColor: Colors.white,
-                  color: Colors.green,
+                TextButton(
+                  child: Text("submit", style: TextStyle(color: Colors.white)),
+                  style: TextButton.styleFrom( primary: Colors.green),
                   onPressed: () {
                     var _credential = PhoneAuthProvider.credential(verificationId: verificationId,
                         smsCode: _codeController.text.trim());

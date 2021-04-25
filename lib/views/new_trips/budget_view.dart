@@ -79,7 +79,7 @@ class _NewTripBudgetViewState extends State<NewTripBudgetView> {
       fields.add(Text("Total: \$$_budgetTotal"));
     }
 
-    fields.add(FlatButton(
+    fields.add(TextButton(
       child: Text(
         "Continue",
         style: TextStyle(fontSize: 25, color: Colors.blue),
@@ -101,7 +101,7 @@ class _NewTripBudgetViewState extends State<NewTripBudgetView> {
       },
     ));
     fields.add(DividerWithText(dividerText: "or"));
-    fields.add(FlatButton(
+    fields.add(TextButton(
       child: Text(
         _switchButtonText,
         style: TextStyle(fontSize: 25, color: Colors.blue),

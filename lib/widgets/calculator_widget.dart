@@ -83,7 +83,7 @@ class _CalculatorWidgetState extends State<CalculatorWidget> {
                         _saved = _saved + int.parse(_moneyController.text);
                         _needed = _needed - int.parse(_moneyController.text);
                       });
-                      final uid = await Provider.of(context).auth.getCurrentUID();
+                      final uid = Provider.of(context).auth.getCurrentUID();
                       await FirebaseFirestore.instance.collection('userData')
                           .doc(uid)
                           .collection('trips')
@@ -100,7 +100,7 @@ class _CalculatorWidgetState extends State<CalculatorWidget> {
                         _saved = _saved - int.parse(_moneyController.text);
                         _needed = _needed + int.parse(_moneyController.text);
                       });
-                      final uid = await Provider.of(context).auth.getCurrentUID();
+                      final uid = Provider.of(context).auth.getCurrentUID();
                       await FirebaseFirestore.instance.collection('userData')
                           .doc(uid)
                           .collection('trips')
@@ -132,17 +132,16 @@ class _CalculatorWidgetState extends State<CalculatorWidget> {
   }
 
 
-  RaisedButton generateAddMoneyBtn(int amount) {
-    return RaisedButton(
-      child: Text("\$$amount"),
-      color: Colors.white,
-      textColor: Colors.deepOrange,
+  ElevatedButton generateAddMoneyBtn(int amount) {
+    return ElevatedButton(
+      child: Text("\$$amount", style: TextStyle(color: Colors.deepOrange)),
+      style: ElevatedButton.styleFrom( primary: Colors.white),
       onPressed: () async {
         setState(() {
           _saved = _saved + amount;
           _needed = _needed - amount;
         });
-        final uid = await Provider.of(context).auth.getCurrentUID();
+        final uid = Provider.of(context).auth.getCurrentUID();
         await FirebaseFirestore.instance.collection('userData')
             .doc(uid)
             .collection('trips')

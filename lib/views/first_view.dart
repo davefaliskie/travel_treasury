@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:travel_budget/widgets/custom_dialog.dart';
+import 'package:travel_budget/widgets/rounded_button.dart';
 
 class FirstView extends StatelessWidget {
   final primaryColor = const Color(0xFF75A2EA);
@@ -36,15 +37,14 @@ class FirstView extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: _height * 0.15),
-                RaisedButton(
+                RoundedButton(
                   color: Colors.white,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
                   child: Padding(
                     padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 30.0, right: 30.0),
                     child: Text(
                       "Get Started",
                       style: TextStyle(
-                        color: primaryColor,
+                        color: Colors.white,
                         fontSize: 28,
                         fontWeight: FontWeight.w300,
                       ),
@@ -66,7 +66,7 @@ class FirstView extends StatelessWidget {
                   },
                 ),
                 SizedBox(height: _height * 0.05),
-                FlatButton(
+                TextButton(
                   child: Text(
                     "Sign In",
                     style: TextStyle(color: Colors.white, fontSize: 25),

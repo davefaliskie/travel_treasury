@@ -67,10 +67,9 @@ class _NewTripDateViewState extends State<NewTripDateView> {
       children: <Widget>[
         SizedBox(
           width: MediaQuery.of(context).size.width * 0.60,
-          child: RaisedButton(
-            child: Text("Change Date Range"),
-            color: Colors.deepPurpleAccent,
-            textColor: Colors.white,
+          child: ElevatedButton(
+            child: Text("Change Date Range", style: TextStyle(color: Colors.white)),
+            style: ElevatedButton.styleFrom(primary: Colors.deepPurpleAccent),
             onPressed: () async {
               await displayDateRangePicker(context);
             },
@@ -78,9 +77,9 @@ class _NewTripDateViewState extends State<NewTripDateView> {
         ),
         SizedBox(
           width: MediaQuery.of(context).size.width * 0.60,
-          child: RaisedButton(
+          child: ElevatedButton(
             child: Text('Continue'),
-            color: Colors.amberAccent,
+            style: ElevatedButton.styleFrom(primary: Colors.amberAccent),
             onPressed: () {
               widget.trip.startDate = _startDate;
               widget.trip.endDate = _endDate;

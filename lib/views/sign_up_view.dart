@@ -4,8 +4,9 @@ import 'package:travel_budget/services/auth_service.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:travel_budget/widgets/provider_widget.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
+import 'package:flutter_auth_buttons/flutter_auth_buttons.dart' as authButtons;
 import 'package:international_phone_input/international_phone_input.dart';
+import 'package:travel_budget/widgets/rounded_button.dart';
 
 // TODO move this to tone location
 final primaryColor = const Color(0xFF75A2EA);
@@ -351,23 +352,20 @@ class _SignUpViewState extends State<SignUpView> {
     return [
       Container(
         width: MediaQuery.of(context).size.width * 0.7,
-        child: RaisedButton(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+        child: RoundedButton(
           color: Colors.white,
-          textColor: primaryColor,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
               _submitButtonText,
-              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w300),
+              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w300, color: primaryColor),
             ),
           ),
           onPressed: submit,
         ),
       ),
       showForgotPassword(_showForgotPassword),
-      FlatButton(
+      TextButton(
         child: Text(
           _switchButtonText,
           style: TextStyle(color: Colors.white),
@@ -382,7 +380,7 @@ class _SignUpViewState extends State<SignUpView> {
 
   Widget showForgotPassword(bool visible) {
     return Visibility(
-      child: FlatButton(
+      child: TextButton(
         child: Text(
           "Forgot Password?",
           style: TextStyle(color: Colors.white),
@@ -409,7 +407,7 @@ class _SignUpViewState extends State<SignUpView> {
           SizedBox(height: 10),
           buildAppleSignIn(_auth),
           SizedBox(height: 10),
-          GoogleSignInButton(
+          authButtons.GoogleSignInButton(
             onPressed: () async {
               try {
                 if (authFormType == AuthFormType.convert) {
@@ -426,9 +424,8 @@ class _SignUpViewState extends State<SignUpView> {
               }
             },
           ),
-          RaisedButton(
-            color: Colors.green,
-            textColor: Colors.white,
+          ElevatedButton(
+            style: ElevatedButton.styleFrom( primary: Colors.green),
             child: Row(
               children: <Widget>[
                 Icon(Icons.phone),
@@ -436,7 +433,7 @@ class _SignUpViewState extends State<SignUpView> {
                   padding: const EdgeInsets.only(
                       left: 14.0, top: 10.0, bottom: 10.0),
                   child: Text("Sign in with Phone",
-                      style: TextStyle(fontSize: 18)),
+                      style: TextStyle(fontSize: 18, color: Colors.white)),
                 )
               ],
             ),
@@ -454,12 +451,12 @@ class _SignUpViewState extends State<SignUpView> {
 
   Widget buildAppleSignIn(_auth) {
     if (authFormType != AuthFormType.convert && _showAppleSignIn == true) {
-      return AppleSignInButton(
+      return authButtons.AppleSignInButton(
         onPressed: () async {
           await _auth.signInWithApple();
           Navigator.of(context).pushReplacementNamed('/home');
         },
-        style: ButtonStyle.black,
+        style: authButtons.AppleButtonStyle.black,
       );
     } else {
       return Container();

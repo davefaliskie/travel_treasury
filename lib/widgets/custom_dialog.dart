@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:travel_budget/widgets/rounded_button.dart';
 
 class CustomDialog extends StatelessWidget {
   final primaryColor = const Color(0xFF75A2EA);
@@ -67,10 +68,8 @@ class CustomDialog extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 24.0),
-                RaisedButton(
+                RoundedButton(
                   color: primaryColor,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0)),
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
                     child: AutoSizeText(
@@ -101,7 +100,7 @@ class CustomDialog extends StatelessWidget {
 
   showSecondaryButton(BuildContext context) {
     if (secondaryButtonRoute != null && secondaryButtonText != null ){
-      return FlatButton(
+      return TextButton(
         child: AutoSizeText(
           secondaryButtonText,
           maxLines: 1,

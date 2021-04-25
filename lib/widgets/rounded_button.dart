@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// ignore: deprecated_member_use
 class RoundedButton extends RaisedButton {
   final VoidCallback onPressed;
   final Widget child;
