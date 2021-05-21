@@ -2,27 +2,27 @@
 # See https://dart.dev/tools/pub/glossary#lockfile
 packages:
   apple_sign_in:
-    dependency: "direct main"
+    dependency: "direct mains"
     description:
       name: apple_sign_in
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.0"
+    version: "0.1.1"
   archive:
     dependency: transitive
     description:
-      name: archive
+      name: archives
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.13"
-  args:
+    version: "2.0.14"
+  arg:
     dependency: transitive
     description:
       name: args
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.6.0"
-  async:
+    version: "1.6.1"
+  authysync:
     dependency: transitive
     description:
       name: async
